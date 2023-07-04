@@ -95,12 +95,13 @@
                                 </select>
                             </div>
                             <div class="basis-2/4 ml-2">
-                                <select id="countries"
+                                <select id="days"
                                     class="block w-full p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    <option value='1' selected>Today</option>
-                                    <option value="2">Yesterday & Today</option>
-                                    <option value="3">1 Month</option>
-                                    <option value="4">2 Month</option>
+                                    <option value='1' selected>7 Days</option>
+                                    <option value='2'>Today</option>
+                                    <option value="3">Yesterday & Today</option>
+                                    <option value="4">1 Month</option>
+                                    <option value="5">2 Month</option>
                                 </select>
                             </div>
                         </div>
@@ -222,6 +223,8 @@
             function fetchChats() {
                 var user = $('#users').val();
                 var searchInput = $('#searchInput').val();
+                var days = $('#days').val();
+
 
 
                 $.ajax({
@@ -231,7 +234,8 @@
                         user: user,
                         searchInput: searchInput,
                         search: search,
-                        filter: filter
+                        filter: filter,
+                        days: days
 
                     },
                     success: function(response) {
@@ -422,7 +426,7 @@
 
                 return formattedDatetime;
             }
-            $('#users').on('change', function() {
+            $('#users,#days').on('change', function() {
                 fetchChats();
             });
 

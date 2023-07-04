@@ -84,6 +84,7 @@ class ChatController extends Controller
         $searchInput = $request->input('searchInput');
         $search = $request->input('search');
         $filter = $request->input('filter');
+        $dateFilter = $request->input('days');
 
 
         $data = Chat::with('user', 'userFrom')
@@ -95,9 +96,33 @@ class ChatController extends Controller
             ->when($filter == true && $searchInput, function ($query) use ($searchInput) {
                 return $query->where('message', 'like', '%' . $searchInput . '%');
             })
+
+            ->when($dateFilter, function ($query) use ($dateFilter) {
+                $now = now()->startOfDay();
+                
+                if ($dateFilter === '1') {
+                    $date = $now->subDays(6);
+                    return $query->where('created_at', '>=', $date);
+                } elseif ($dateFilter === '2') {
+                    return $query->where('created_at', '>=', $now);
+                } elseif ($dateFilter === '3') {
+                    $yesterday = $now->subDay();
+                    return $query->whereBetween('created_at', [$yesterday, $now]);
+                } elseif ($dateFilter === '4') {
+                    $oneMonthAgo = $now->subMonth();
+                    return $query->where('created_at', '>=', $oneMonthAgo);
+                } elseif ($dateFilter === '5') {
+                    $twoMonthsAgo = $now->subMonths(2);
+                    return $query->where('created_at', '>=', $twoMonthsAgo);
+                }
+            })
+            // ->when($search == true && $searchInput, function ($query) use ($searchInput) {
+            //     return $query->where('message', 'like', '%' . $searchInput . '%')
+            //     ->offset(1)
+            //     ->limit(1);
+            // })
             ->orderBy('created_at', 'asc')
             ->get();
-            // dd($serachInput);
 
         $this->readChat();
         
