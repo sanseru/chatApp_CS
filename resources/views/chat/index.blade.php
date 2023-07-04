@@ -97,11 +97,10 @@
                             <div class="basis-2/4 ml-2">
                                 <select id="countries"
                                     class="block w-full p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    <option value='' selected>Choose a country</option>
-                                    <option value="US">United States</option>
-                                    <option value="CA">Canada</option>
-                                    <option value="FR">France</option>
-                                    <option value="DE">Germany</option>
+                                    <option value='1' selected>Today</option>
+                                    <option value="2">Yesterday & Today</option>
+                                    <option value="3">1 Month</option>
+                                    <option value="4">2 Month</option>
                                 </select>
                             </div>
                         </div>
@@ -150,15 +149,10 @@
                                     <div class="flex items-center px-3 py-2 rounded-lg bg-gray-300 dark:bg-gray-700">
                                         <button type="button"
                                             class="inline-flex justify-center p-2 text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
-                                            <svg aria-hidden="true" class="w-6 h-6" fill="currentColor"
-                                                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd"
-                                                    d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
-                                                    clip-rule="evenodd"></path>
-                                            </svg>
+                                            <i class="fa fa-paperclip"></i>
                                             <span class="sr-only">Upload image</span>
                                         </button>
-                                        <button type="button"
+                                        <!-- <button type="button"
                                             class="p-2 text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
                                             <svg aria-hidden="true" class="w-6 h-6" fill="currentColor"
                                                 viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -167,7 +161,7 @@
                                                     clip-rule="evenodd"></path>
                                             </svg>
                                             <span class="sr-only">Add emoji</span>
-                                        </button>
+                                        </button> -->
                                         <textarea id="chatMessagetext" rows="1"
                                             class="block mx-4 p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             placeholder="Your message..."></textarea>
@@ -258,6 +252,10 @@
                     var message = $('#chatMessagetext').val();
                     var to = $('#users').val();
 
+                    if(to == '' || to == undefined){
+                        	return alert('Pilih User Terlebih Dahulu Yang Ingin Dikirim');
+                    }
+
                     var csrfToken = $('meta[name="csrf-token"]').attr('content');
 
                     // Make an AJAX request to the controller
@@ -273,6 +271,7 @@
                         success: function(response) {
                             // Handle the success response from the controller
                             console.log('Message saved successfully');
+                            $('#chatMessagetext').val('');
                             // chatRightAdd(response.message);
                     fetchChats();
 
@@ -283,9 +282,25 @@
                         }
                     });
                 });
-                // setInterval(() => {
-                //     fetchChats();
-                // }, 5000); // Panggil fetchChats setiap 5 detik (5000 milidetik)
+                setInterval(() => {
+                    cekUnRead();
+                }, 5000); // Panggil fetchChats setiap 5 detik (5000 milidetik)
+
+                function cekUnRead(){
+                    $.ajax({
+                        url: 'chat/unread/all',
+                        method: 'GET',
+                        success: function(response) {
+                            if(response > 0){
+                                fetchChats();
+                            }
+                        },
+                        error: function(error) {
+                            console.log(error);
+                        }
+                    });
+
+                }
 
                 function scrollChatContainerToBottom() {
                     var parentDiv = $('#chatContainer');
@@ -301,8 +316,20 @@
 
                     // Create the sender info element
                     var senderInfo = $('<div></div>').addClass('text-sm fs-7').text(
-                        chat.user_from.name + '  - ' + formatDate(chat.created_at));
+                        chat.user_from.name + '  - ' + formatDate(chat.created_at)+ '   ');
 
+                    // Create the reply button
+                    var replyButton = $('<button></button>')
+                    .addClass('reply-button')
+                    .html('<i class="fa-solid fa-reply fa-2xs"></i> Reply')
+                    .click(function() {
+                        // Call the function to change the dropdown value
+                        changeDropdownValue(chat.from);
+                    });
+
+                    senderInfo.append(senderInfo, replyButton)
+
+                        
                     // Create the chat message element
                     var message = $('<p></p>').addClass(
                             'border rounded-lg p-2 text-wrap me-5 card card-body bg-white')
@@ -379,6 +406,10 @@
 
                     console.log(formatDateReturn(lastTime));
 
+                }
+
+                function changeDropdownValue(id){
+                    $('#users').val(id);
                 }
 
                 function formatDate(datetime) {

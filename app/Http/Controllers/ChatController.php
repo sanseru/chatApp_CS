@@ -37,6 +37,8 @@ class ChatController extends Controller
             'message' => $request->input('message'),
             'from' => Auth::id(),
             'to' => $request->input('to'),
+            'isread' => 0,
+
         ]);
         $chatId = $message->id;
 
@@ -79,7 +81,6 @@ class ChatController extends Controller
     public function chat(Request $request)
     {
         $userId = $request->input('user');
-        // $selfId = Auth::id();
         $data = Chat::with('user', 'userFrom')
             ->when($userId, function ($query, $userId) {
                 return $query->where('from', $userId)
@@ -88,6 +89,20 @@ class ChatController extends Controller
             })
             ->orderBy('created_at', 'asc')
             ->get();
+
+        $this->readChat();
+        
         return $data;
+    }
+
+    public function unRead(Request $request)
+    {
+        $data = Chat::latest()->where('to', Auth::id())->where('isread' , 0)->take(100)
+            ->count();
+        return $data;
+    }
+
+    public function readChat(){
+        return Chat::where('to', Auth::id())->where('isread', 0)->update(['isread' => 1]);
     }
 }

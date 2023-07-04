@@ -31,6 +31,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('chat', ChatController::class);
     Route::prefix('chat')->controller(ChatController::class)->group(function () {
         Route::get('show/all', 'chat')->name('chats');
+        Route::get('unread/all', 'unRead')->name('chatunread');
+
     });
 
 });
