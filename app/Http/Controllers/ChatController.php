@@ -81,14 +81,23 @@ class ChatController extends Controller
     public function chat(Request $request)
     {
         $userId = $request->input('user');
+        $searchInput = $request->input('searchInput');
+        $search = $request->input('search');
+        $filter = $request->input('filter');
+
+
         $data = Chat::with('user', 'userFrom')
             ->when($userId, function ($query, $userId) {
                 return $query->where('from', $userId)
                     ->orWhere('from', Auth::id())
                     ->whereIn('to', [$userId, Auth::id()]);
             })
+            ->when($filter == true && $searchInput, function ($query) use ($searchInput) {
+                return $query->where('message', 'like', '%' . $searchInput . '%');
+            })
             ->orderBy('created_at', 'asc')
             ->get();
+            // dd($serachInput);
 
         $this->readChat();
         

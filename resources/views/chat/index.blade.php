@@ -10,19 +10,19 @@
                 <div class="flex flex-row">
                     <div class="basis-3/5">
                         <div class="m-3">
-                            <input type="text" id="small-input" placeholder="Search..."
+                            <input type="text" id="searchInput" placeholder="Search..."
                                 class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         </div>
                     </div>
                     <div class="basis-1/5 m-3 flex justify-center">
-                        <span
+                        <button onclick="searchChat()"
                             class="relative inline-flex items-center px-2 py-2 border border-gray-200 bg-white text-xs font-medium text-gray-700">
                             <i class="fa-solid fa-magnifying-glass"></i>
-                        </span>
-                        <span
+                        </button>
+                        <button onclick="filterChat()"
                             class="ml-1 relative inline-flex items-center px-2 py-2 border border-gray-200 bg-white text-xs font-medium text-gray-700">
                             <i class="fa-solid fa-filter"></i>
-                        </span>
+                        </button>
                     </div>
                     <div class="basis-2/5 m-3">
                         <nav class="relative inline-flex shadow-sm" aria-label="Pagination">
@@ -205,253 +205,275 @@
     </div>
     @push('scripts')
         <script>
-            $(document).ready(function() {
-                var lastTime;
-
-                function fetchChats() {
-                    var user = $('#users').val();
-
-                    $.ajax({
-                        url: 'chat/show/all',
-                        method: 'GET',
-                        data: {
-                            user: user,
-                            key2: 'value2'
-                        },
-                        success: function(response) {
-                            $('#chatContainer').empty();
-                            response.forEach(function(chat) {
-                                if ({{ Auth::id() }} == chat.from) {
-                                    chatRight(chat);
-
-                                } else {
-                                    chatLeft(chat);
-
-                                }
-                                lastTime = chat.created_at;
-                                scrollChatContainerToBottom();
-
-                            });
-                            // self.chats = response.data; // Menggunakan self untuk mengakses objek Alpine.js
-                        },
-                        error: function(error) {
-                            console.log(error);
-                        }
-                    });
-                }
+            var filter = '' ;
+            var search = '';
+            function searchChat() {
+                search = true;
+                filter = '';
 
                 fetchChats();
+            }
+            function filterChat() {
+                filter = true;
+                search = '';
+                fetchChats();
+            }
 
-                $('#users').on('change', function() {
-                    fetchChats();
-                });
+            function fetchChats() {
+                var user = $('#users').val();
+                var searchInput = $('#searchInput').val();
 
 
-                $('#sendMessageBtn').on('click', function() {
-                    // Get the message content from the user input or other source
-                    var message = $('#chatMessagetext').val();
-                    var to = $('#users').val();
+                $.ajax({
+                    url: 'chat/show/all',
+                    method: 'GET',
+                    data: {
+                        user: user,
+                        searchInput: searchInput,
+                        search: search,
+                        filter: filter
 
-                    if(to == '' || to == undefined){
-                        	return alert('Pilih User Terlebih Dahulu Yang Ingin Dikirim');
-                    }
+                    },
+                    success: function(response) {
+                        $('#chatContainer').empty();
+                        response.forEach(function(chat) {
+                            if ({{ Auth::id() }} == chat.from) {
+                                chatRight(chat);
 
-                    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+                            } else {
+                                chatLeft(chat);
 
-                    // Make an AJAX request to the controller
-                    $.ajax({
-                        url: '/chat',
-                        method: 'POST',
-                        data: {
-                            _token: csrfToken, // Include the CSRF token in the data
-                            message: message,
-                            to: to,
-
-                        },
-                        success: function(response) {
-                            // Handle the success response from the controller
-                            console.log('Message saved successfully');
-                            $('#chatMessagetext').val('');
-                            // chatRightAdd(response.message);
-                    fetchChats();
-
-                        },
-                        error: function(xhr, status, error) {
-                            // Handle the error response from the controller
-                            console.log('Error saving message');
-                        }
-                    });
-                });
-                setInterval(() => {
-                    cekUnRead();
-                }, 5000); // Panggil fetchChats setiap 5 detik (5000 milidetik)
-
-                function cekUnRead(){
-                    $.ajax({
-                        url: 'chat/unread/all',
-                        method: 'GET',
-                        success: function(response) {
-                            if(response > 0){
-                                fetchChats();
                             }
-                        },
-                        error: function(error) {
-                            console.log(error);
+                            lastTime = chat.created_at;
+                            scrollChatContainerToBottom();
+
+                        });
+                        // self.chats = response.data; // Menggunakan self untuk mengakses objek Alpine.js
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }
+
+            function cekUnRead() {
+                $.ajax({
+                    url: 'chat/unread/all',
+                    method: 'GET',
+                    success: function(response) {
+                        if (response > 0) {
+                            fetchChats();
                         }
-                    });
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
 
-                }
+            }
 
-                function scrollChatContainerToBottom() {
-                    var parentDiv = $('#chatContainer');
-                    var lastChildDiv = parentDiv.children().last();
-                    parentDiv.scrollTop(lastChildDiv.offset().top - parentDiv.offset().top + parentDiv.scrollTop());
+            function scrollChatContainerToBottom() {
+                var parentDiv = $('#chatContainer');
+                var lastChildDiv = parentDiv.children().last();
+                parentDiv.scrollTop(lastChildDiv.offset().top - parentDiv.offset().top + parentDiv.scrollTop());
 
-                }
+            }
 
-                function chatLeft(chat) {
-                    // Create the parent container element
-                    var parentDiv = $('<div></div>').addClass('mt-4').attr('id', 'chat' + chat.uuid);
+            function chatLeft(chat) {
+                // Create the parent container element
+                var parentDiv = $('<div></div>').addClass('mt-4').attr('id', 'chat' + chat.uuid);
 
 
-                    // Create the sender info element
-                    var senderInfo = $('<div></div>').addClass('text-sm fs-7').text(
-                        chat.user_from.name + '  - ' + formatDate(chat.created_at)+ '   ');
+                // Create the sender info element
+                var senderInfo = $('<div></div>').addClass('text-sm fs-7 flex justify-between mr-2').text(
+                    chat.user_from.name + '  - ' + formatDate(chat.created_at) + '   ');
 
-                    // Create the reply button
-                    var replyButton = $('<button></button>')
-                    .addClass('reply-button')
-                    .html('<i class="fa-solid fa-reply fa-2xs"></i> Reply')
+                // Create the reply button
+                var replyButton = $('<button></button>')
+                    .addClass('reply-button mr-14')
+                    .html('<i class="fa-solid fa-reply fa-2xs"></i> <small>Reply</small>')
                     .click(function() {
                         // Call the function to change the dropdown value
                         changeDropdownValue(chat.from);
                     });
 
-                    senderInfo.append(senderInfo, replyButton)
-
-                        
-                    // Create the chat message element
-                    var message = $('<p></p>').addClass(
-                            'border rounded-lg p-2 text-wrap me-5 card card-body bg-white')
-                        .text(chat
-                            .message);
+                senderInfo.append(senderInfo, replyButton)
 
 
-                    // Append inner container and message to parent container
-                    parentDiv.append(senderInfo, message);
+                // Create the chat message element
+                var message = $('<p></p>').addClass(
+                        'max-w-[19rem] break-words border rounded-lg p-2 text-wrap me-5 card card-body bg-blue-100')
+                    .text(chat
+                        .message);
 
-                    // Append parent container to the desired location in the DOM
-                    $('#chatContainer').append(parentDiv);
+
+                // Append inner container and message to parent container
+                parentDiv.append(senderInfo, message);
+
+                // Append parent container to the desired location in the DOM
+                $('#chatContainer').append(parentDiv);
 
 
+            }
+
+            function chatRight(chat) {
+                // Create the parent container element
+                var parentDiv = $('<div></div>').addClass('ml-8 mt-4').attr('id', 'chat' + chat.uuid);
+
+                // Create the inner container element
+                var innerDiv = $('<div></div>').addClass('text-end');
+
+                // Create the sender info element
+                var senderInfo = $('<div></div>').addClass('text-sm fs-7').text(
+                    chat.user_from.name + '  - ' + formatDate(chat.created_at));
+
+                // Create the chat message element
+                var message = $('<p></p>').addClass(
+                        'max-w-[19rem] break-words border rounded-lg p-2 bg-white text-start text-wrap ms-5 card card-body bg-green-200')
+                    .text(chat
+                        .message);
+
+                // Append sender info to inner container
+                innerDiv.append(senderInfo);
+
+                // Append inner container and message to parent container
+                parentDiv.append(innerDiv, message);
+
+                // Append parent container to the desired location in the DOM
+                $('#chatContainer').append(parentDiv);
+
+
+                console.log(formatDateReturn(lastTime));
+
+            }
+
+            function chatRightAdd(chat) {
+                // Create the parent container element
+                var parentDiv = $('<div></div>').addClass('ml-8 mt-4').attr('id', 'chat' + chat.uuid);
+
+                // Create the inner container element
+                var innerDiv = $('<div></div>').addClass('text-end');
+
+                // Create the sender info element
+                var senderInfo = $('<div></div>').addClass('text-sm fs-7').text(
+                    chat.userFrom.name + '  - ' + formatDate(chat.created_at));
+
+                // Create the chat message element
+                var message = $('<p></p>').addClass(
+                        'border rounded-lg p-2 bg-white text-start text-wrap ms-5 card card-body bg-green-200')
+                    .text(chat
+                        .message);
+
+                // Append sender info to inner container
+                innerDiv.append(senderInfo);
+
+                // Append inner container and message to parent container
+                parentDiv.append(innerDiv, message);
+
+                // Append parent container to the desired location in the DOM
+                $('#chatContainer').append(parentDiv);
+
+
+                console.log(formatDateReturn(lastTime));
+
+            }
+
+            function changeDropdownValue(id) {
+                $('#users').val(id);
+            }
+
+            function formatDate(datetime) {
+                var dateObj = new Date(datetime);
+
+                // Format the date portion as "d-m-Y"
+                var formattedDate = dateObj.toLocaleDateString('en-GB', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                }).replace(/\//g, '-');
+
+                // Format the time portion as "h:i:s AM/PM"
+                var formattedTime = dateObj.toLocaleTimeString('en-US', {
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: true
+                });
+
+                // Combine the formatted date and time
+                var formattedDatetime = formattedDate + ' ' + formattedTime;
+
+                return formattedDatetime;
+            }
+
+            function formatDateReturn(datetime) {
+                var dateObj = new Date(datetime);
+
+                var year = dateObj.getFullYear();
+                var month = ('0' + (dateObj.getMonth() + 1)).slice(-2);
+                var day = ('0' + dateObj.getDate()).slice(-2);
+
+                var hours = ('0' + dateObj.getHours()).slice(-2);
+                var minutes = ('0' + dateObj.getMinutes()).slice(-2);
+                var seconds = ('0' + dateObj.getSeconds()).slice(-2);
+
+                var formattedDatetime = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' +
+                    seconds;
+
+                return formattedDatetime;
+            }
+            $('#users').on('change', function() {
+                fetchChats();
+            });
+
+            $('#sendMessageBtn').on('click', function() {
+                // Get the message content from the user input or other source
+                var message = $('#chatMessagetext').val();
+                var to = $('#users').val();
+
+                if (to == '' || to == undefined) {
+                    return alert('Pilih User Terlebih Dahulu Yang Ingin Dikirim');
                 }
 
-                function chatRight(chat) {
-                    // Create the parent container element
-                    var parentDiv = $('<div></div>').addClass('ml-8 mt-4').attr('id', 'chat' + chat.uuid);
+                var csrfToken = $('meta[name="csrf-token"]').attr('content');
 
-                    // Create the inner container element
-                    var innerDiv = $('<div></div>').addClass('text-end');
+                // Make an AJAX request to the controller
+                $.ajax({
+                    url: '/chat',
+                    method: 'POST',
+                    data: {
+                        _token: csrfToken, // Include the CSRF token in the data
+                        message: message,
+                        to: to,
 
-                    // Create the sender info element
-                    var senderInfo = $('<div></div>').addClass('text-sm fs-7').text(
-                        chat.user_from.name + '  - ' + formatDate(chat.created_at));
+                    },
+                    success: function(response) {
+                        // Handle the success response from the controller
+                        console.log('Message saved successfully');
+                        $('#chatMessagetext').val('');
+                        // chatRightAdd(response.message);
+                        fetchChats();
 
-                    // Create the chat message element
-                    var message = $('<p></p>').addClass(
-                            'border rounded-lg p-2 bg-white text-start text-wrap ms-5 card card-body bg-green-200')
-                        .text(chat
-                            .message);
-
-                    // Append sender info to inner container
-                    innerDiv.append(senderInfo);
-
-                    // Append inner container and message to parent container
-                    parentDiv.append(innerDiv, message);
-
-                    // Append parent container to the desired location in the DOM
-                    $('#chatContainer').append(parentDiv);
-
-
-                    console.log(formatDateReturn(lastTime));
-
-                }
-
-                function chatRightAdd(chat) {
-                    // Create the parent container element
-                    var parentDiv = $('<div></div>').addClass('ml-8 mt-4').attr('id', 'chat' + chat.uuid);
-
-                    // Create the inner container element
-                    var innerDiv = $('<div></div>').addClass('text-end');
-
-                    // Create the sender info element
-                    var senderInfo = $('<div></div>').addClass('text-sm fs-7').text(
-                        chat.userFrom.name + '  - ' + formatDate(chat.created_at));
-
-                    // Create the chat message element
-                    var message = $('<p></p>').addClass(
-                            'border rounded-lg p-2 bg-white text-start text-wrap ms-5 card card-body bg-green-200')
-                        .text(chat
-                            .message);
-
-                    // Append sender info to inner container
-                    innerDiv.append(senderInfo);
-
-                    // Append inner container and message to parent container
-                    parentDiv.append(innerDiv, message);
-
-                    // Append parent container to the desired location in the DOM
-                    $('#chatContainer').append(parentDiv);
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle the error response from the controller
+                        console.log('Error saving message');
+                    }
+                });
+            });
+            $(document).ready(function() {
+                var lastTime;
 
 
-                    console.log(formatDateReturn(lastTime));
 
-                }
+                fetchChats();
 
-                function changeDropdownValue(id){
-                    $('#users').val(id);
-                }
 
-                function formatDate(datetime) {
-                    var dateObj = new Date(datetime);
+                setInterval(() => {
+                    cekUnRead();
+                }, 3000); // Panggil fetchChats setiap 5 detik (5000 milidetik)
 
-                    // Format the date portion as "d-m-Y"
-                    var formattedDate = dateObj.toLocaleDateString('en-GB', {
-                        day: '2-digit',
-                        month: '2-digit',
-                        year: 'numeric'
-                    }).replace(/\//g, '-');
 
-                    // Format the time portion as "h:i:s AM/PM"
-                    var formattedTime = dateObj.toLocaleTimeString('en-US', {
-                        hour: 'numeric',
-                        minute: '2-digit',
-                        second: '2-digit',
-                        hour12: true
-                    });
-
-                    // Combine the formatted date and time
-                    var formattedDatetime = formattedDate + ' ' + formattedTime;
-
-                    return formattedDatetime;
-                }
-
-                function formatDateReturn(datetime) {
-                    var dateObj = new Date(datetime);
-
-                    var year = dateObj.getFullYear();
-                    var month = ('0' + (dateObj.getMonth() + 1)).slice(-2);
-                    var day = ('0' + dateObj.getDate()).slice(-2);
-
-                    var hours = ('0' + dateObj.getHours()).slice(-2);
-                    var minutes = ('0' + dateObj.getMinutes()).slice(-2);
-                    var seconds = ('0' + dateObj.getSeconds()).slice(-2);
-
-                    var formattedDatetime = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' +
-                        seconds;
-
-                    return formattedDatetime;
-                }
 
 
             });
