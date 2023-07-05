@@ -597,7 +597,7 @@
                 } else {
                                  // Create the chat message element
                 var message = $('<p></p>').addClass(
-                        'max-w-[19rem] break-words border rounded-lg p-2 text-wrap me-5 card card-body bg-blue-100')
+                        'max-w-[19rem] break-words border rounded-lg p-2 text-wrap me-5 card card-body bg-blue-100 chatright')
                     .html(chat
                         .message);
                 }
