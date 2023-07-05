@@ -32,6 +32,8 @@ Route::middleware('auth')->group(function () {
     Route::prefix('chat')->controller(ChatController::class)->group(function () {
         Route::get('show/all', 'chat')->name('chats');
         Route::get('unread/all', 'unRead')->name('chatunread');
+        Route::post('uploadfile', 'uploadFileChat')->name('uploadfilechat');
+        // Route::get('file/read', 'fileRead')->name('fileread');
 
     });
 

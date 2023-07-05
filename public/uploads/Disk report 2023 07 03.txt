@@ -1,0 +1,349 @@
+
+  -- General Information --
+
+    Application Information
+   -------------------------
+    Installed Version  . . . . . . . . . . . . . . . : Hard Disk Sentinel 6.10 PRO
+    Registered To  . . . . . . . . . . . . . . . . . : Unregistered version, please register.
+    Current Date And Time  . . . . . . . . . . . . . : 03/07/2023 14:19:57
+    Health Calculation Method  . . . . . . . . . . . : Analyse data field (default)
+
+    Computer Information
+   ----------------------
+    Computer Name  . . . . . . . . . . . . . . . . . : NB-PDI-BUDHIPAM
+    User Name  . . . . . . . . . . . . . . . . . . . : Haris Hakim
+    Computer Type  . . . . . . . . . . . . . . . . . : Mobile
+    IP Address . . . . . . . . . . . . . . . . . . . : 172.16.9.33
+    MAC Address  . . . . . . . . . . . . . . . . . . : 9C-5A-44-6F-29-59
+    System Uptime  . . . . . . . . . . . . . . . . . : 0 days, 3 hours, 31 minutes, 22 seconds
+    System Idle Time . . . . . . . . . . . . . . . . : 0 days, 0 hours, 0 minutes, 0 seconds
+    System Up Since  . . . . . . . . . . . . . . . . : 03/07/2023 10:48:35
+    CPU Usage  . . . . . . . . . . . . . . . . . . . : CPU #1: 9 %, CPU #2: 6 %, CPU #3: 17 %, CPU #4: 7 %, CPU #5: 12 %, CPU #6: 6 %, CPU #7: 11 %, CPU #8: 7 %
+    Virtual Memory . . . . . . . . . . . . . . . . . : 9943 MB, Used: 5374 MB (54 %)
+
+    System Information
+   --------------------
+    Windows Version  . . . . . . . . . . . . . . . . : Windows 10 Pro 22H2 
+    CPU Type & Speed #1  . . . . . . . . . . . . . . : Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz, 1800 MHz
+    CPU Type & Speed #2  . . . . . . . . . . . . . . : Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz, 1800 MHz
+    CPU Type & Speed #3  . . . . . . . . . . . . . . : Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz, 1800 MHz
+    CPU Type & Speed #4  . . . . . . . . . . . . . . : Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz, 1800 MHz
+    CPU Type & Speed #5  . . . . . . . . . . . . . . : Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz, 1800 MHz
+    CPU Type & Speed #6  . . . . . . . . . . . . . . : Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz, 1800 MHz
+    CPU Type & Speed #7  . . . . . . . . . . . . . . : Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz, 1800 MHz
+    CPU Type & Speed #8  . . . . . . . . . . . . . . : Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz, 1800 MHz
+    BIOS Manufacturer  . . . . . . . . . . . . . . . : LENOVO - 1 6UCN55WW(V4.10) INSYDE Corp. - 62540410  
+    Physical Memory Size . . . . . . . . . . . . . . : 8024 MB, Used: 4487 MB (56 %)
+    Display Adapter  . . . . . . . . . . . . . . . . : AMD Radeon R7 M440
+    Display Resolution . . . . . . . . . . . . . . . : 1920 x 1080 (32 bit)
+    Printer #1 . . . . . . . . . . . . . . . . . . . : Fax
+    Printer #2 . . . . . . . . . . . . . . . . . . . : Microsoft Print to PDF
+    Printer #3 . . . . . . . . . . . . . . . . . . . : Microsoft XPS Document Writer
+    Network Controller #1  . . . . . . . . . . . . . : Realtek PCIe GbE Family Controller
+    Network Controller #2  . . . . . . . . . . . . . : Intel(R) Dual Band Wireless-AC 3165
+    Optical Drive
+
+    PCI Device Information
+   ------------------------
+    PCI Bus 0; Device 2; Function 0  . . . . . . . . : Intel(R) UHD Graphics 620
+    PCI Bus 0; Device 4; Function 0  . . . . . . . . : Intel(R) Dynamic Platform and Thermal Framework Processor Participant
+    PCI Bus 0; Device 20; Function 0 . . . . . . . . : %1 USB %2 eXtensible Host Controller - %3 (Microsoft);(Intel(R),3.0,1.0)
+    PCI Bus 0; Device 21; Function 0 . . . . . . . . : Intel(R) Serial IO I2C Host Controller - 9D60
+    PCI Bus 0; Device 21; Function 1 . . . . . . . . : Intel(R) Serial IO I2C Host Controller - 9D61
+    PCI Bus 0; Device 22; Function 0 . . . . . . . . : Intel(R) Management Engine Interface 
+    PCI Bus 0; Device 23; Function 0 . . . . . . . . : Standard SATA AHCI Controller
+    PCI Bus 0; Device 28; Function 0 . . . . . . . . : Mobile Intel(R) Processor Family I/O PCI Express Root Port #1 - 9D10
+    PCI Bus 0; Device 28; Function 4 . . . . . . . . : Mobile Intel(R) Processor Family I/O PCI Express Root Port #5 - 9D14
+    PCI Bus 0; Device 28; Function 5 . . . . . . . . : Mobile Intel(R) Processor Family I/O PCI Express Root Port #6 - 9D15
+    PCI Bus 0; Device 31; Function 3 . . . . . . . . : High Definition Audio Controller
+    PCI Bus 0; Device 31; Function 4 . . . . . . . . : Synaptics SMBus Driver
+    PCI Bus 1; Device 0; Function 0  . . . . . . . . : AMD Radeon R7 M440
+    PCI Bus 2; Device 0; Function 0  . . . . . . . . : Realtek PCIe GbE Family Controller
+    PCI Bus 3; Device 0; Function 0  . . . . . . . . : Intel(R) Dual Band Wireless-AC 3165
+
+
+
+  -- Physical Disk Information - Disk: #0: ST1000LM035-1RK172 --
+
+    Hard Disk Summary
+   -------------------
+    Hard Disk Number . . . . . . . . . . . . . . . . : 0
+    Interface  . . . . . . . . . . . . . . . . . . . : S-ATA Gen3, 6 Gbps
+    Disk Controller  . . . . . . . . . . . . . . . . : Standard SATA AHCI Controller (AHCI) [VEN: 8086, DEV: 9D03] Version: 10.0.19041.1889, 6-21-2006
+    Disk Location  . . . . . . . . . . . . . . . . . : Bus Number 0, Target Id 0, LUN 0
+    Hard Disk Model ID . . . . . . . . . . . . . . . : ST1000LM035-1RK172
+    Firmware Revision  . . . . . . . . . . . . . . . : LCM2
+    Hard Disk Serial Number  . . . . . . . . . . . . : WKP3DJC4
+    Total Size . . . . . . . . . . . . . . . . . . . : 953867 MB
+    Power State  . . . . . . . . . . . . . . . . . . : Active
+    Device Type  . . . . . . . . . . . . . . . . . . : Fixed Disk
+    Logical Drive(s) . . . . . . . . . . . . . . . . : C: [] D: [Data] 
+    Current Temperature  . . . . . . . . . . . . . . : 42 °C
+    Power On Time  . . . . . . . . . . . . . . . . . : 198 days, 9 hours
+    Estimated Remaining Lifetime . . . . . . . . . . : 10 days
+    Health . . . . . . . . . . . . . . . . . . . . . : #------------------- 8 % (Critical)
+    Performance  . . . . . . . . . . . . . . . . . . : #################### 100 % (Excellent)
+
+    There are 792 bad sectors on the disk surface. The contents of these sectors were moved to the spare area.
+    The drive found 8 bad sectors during its self test.
+    Based on the number of remapping operations, the health of the disk was decreased in different steps.
+    There are 8 weak sectors found on the disk surface. They may be remapped any time in the later use of the disk.
+    More information: https://www.hdsentinel.com/hard_disk_case_weak_sectors.php
+    51 errors occurred during data transfer.
+    In case of sudden system crash, reboot, blue-screen-of-death, inaccessible file(s)/folder(s), it is recommended to verify data and power cables, connections - and if possible try different cables to prevent further problems.
+    More information: https://www.hdsentinel.com/hard_disk_case_communication_error.php
+    It is recommended to examine the log of the disk regularly. All new problems found will be logged there.
+      It is recommended to backup immediately to prevent data loss.
+
+    ATA Information
+   -----------------
+    Hard Disk Cylinders  . . . . . . . . . . . . . . : 1938021
+    Hard Disk Heads  . . . . . . . . . . . . . . . . : 16
+    Hard Disk Sectors  . . . . . . . . . . . . . . . : 63
+    ATA Revision . . . . . . . . . . . . . . . . . . : ACS-3 Revision 3b
+    Transport Version  . . . . . . . . . . . . . . . : SATA Rev 3.1
+    Total Sectors  . . . . . . . . . . . . . . . . . : 244190646
+    Bytes Per Sector . . . . . . . . . . . . . . . . : 4096 [Advanced Format]
+    Multiple Sectors . . . . . . . . . . . . . . . . : 16
+    Error Correction Bytes . . . . . . . . . . . . . : 0
+    Unformatted Capacity . . . . . . . . . . . . . . : 953870 MB
+    Maximum PIO Mode . . . . . . . . . . . . . . . . : 4
+    Maximum Multiword DMA Mode . . . . . . . . . . . : 2
+    Highest Possible Transfer Rate . . . . . . . . . : S-ATA Gen3 Signaling Speed (6 Gps)
+    Negotiated Transfer Rate . . . . . . . . . . . . : S-ATA Gen3 Signaling Speed (6 Gps)
+    Minimum Multiword DMA Transfer Time  . . . . . . : 120 ns
+    Recommended Multiword DMA Transfer Time  . . . . : 120 ns
+    Minimum PIO Transfer Time Without IORDY  . . . . : 120 ns
+    Minimum PIO Transfer Time With IORDY . . . . . . : 120 ns
+    ATA Control Byte . . . . . . . . . . . . . . . . : Valid
+    ATA Checksum Value . . . . . . . . . . . . . . . : Valid
+
+    Acoustic Management Configuration
+   -----------------------------------
+    Acoustic Management  . . . . . . . . . . . . . . : Not supported
+    Acoustic Management  . . . . . . . . . . . . . . : Disabled
+    Current Acoustic Level . . . . . . . . . . . . . : Default (00h)
+    Recommended Acoustic Level . . . . . . . . . . . : Max performance and volume (FEh)
+
+    ATA Features
+   --------------
+    Read Ahead Buffer  . . . . . . . . . . . . . . . : Supported, Enabled
+    DMA  . . . . . . . . . . . . . . . . . . . . . . : Supported
+    Ultra DMA  . . . . . . . . . . . . . . . . . . . : Supported
+    S.M.A.R.T. . . . . . . . . . . . . . . . . . . . : Supported
+    Power Management . . . . . . . . . . . . . . . . : Supported
+    Write Cache  . . . . . . . . . . . . . . . . . . : Supported
+    Host Protected Area  . . . . . . . . . . . . . . : Supported
+    HPA Security Extensions  . . . . . . . . . . . . : Supported
+    Advanced Power Management  . . . . . . . . . . . : Supported, Enabled
+    Advanced Power Management Level  . . . . . . . . : Minimum power consumption without standby (128)
+    Extended Power Management  . . . . . . . . . . . : Not supported
+    Power Up In Standby  . . . . . . . . . . . . . . : Not supported
+    48-Bit LBA Addressing  . . . . . . . . . . . . . : Supported
+    Device Configuration Overlay . . . . . . . . . . : Supported
+    IORDY Support  . . . . . . . . . . . . . . . . . : Supported
+    Read/Write DMA Queue . . . . . . . . . . . . . . : Not supported
+    NOP Command  . . . . . . . . . . . . . . . . . . : Not supported
+    Trusted Computing  . . . . . . . . . . . . . . . : Not supported
+    64-Bit World Wide ID . . . . . . . . . . . . . . : 5000C500C0CB0A3B
+    Streaming  . . . . . . . . . . . . . . . . . . . : Not supported
+    Media Card Pass Through  . . . . . . . . . . . . : Not supported
+    General Purpose Logging  . . . . . . . . . . . . : Supported
+    Error Logging  . . . . . . . . . . . . . . . . . : Supported
+    CFA Feature Set  . . . . . . . . . . . . . . . . : Not supported
+    CFast Device . . . . . . . . . . . . . . . . . . : Not supported
+    Long Physical Sectors (8)  . . . . . . . . . . . : Supported
+    Long Logical Sectors . . . . . . . . . . . . . . : Not supported
+    Write-Read-Verify  . . . . . . . . . . . . . . . : Supported, Enabled
+    NV Cache Feature . . . . . . . . . . . . . . . . : Not supported
+    NV Cache Power Mode  . . . . . . . . . . . . . . : Not supported
+    NV Cache Size  . . . . . . . . . . . . . . . . . : Not supported
+    Free-fall Control  . . . . . . . . . . . . . . . : Not supported
+    Free-fall Control Sensitivity  . . . . . . . . . : Not supported
+    Service Interrupt  . . . . . . . . . . . . . . . : Not supported
+    IDLE IMMEDIATE Command With UNLOAD Feature . . . : Supported
+    Zoned Capabilities . . . . . . . . . . . . . . . : Not supported
+    SCT Command Transport  . . . . . . . . . . . . . : Supported
+    SCT Error Recovery Control . . . . . . . . . . . : Not supported
+    Nominal Media Rotation Rate  . . . . . . . . . . : 5400 RPM
+    Nominal Form Factor  . . . . . . . . . . . . . . : 2.5 inch
+
+    SSD Features
+   --------------
+    Data Set Management  . . . . . . . . . . . . . . : Not supported
+    TRIM Command . . . . . . . . . . . . . . . . . . : Not supported
+    Deterministic Read After TRIM  . . . . . . . . . : Not supported
+    Read Zeroes After TRIM . . . . . . . . . . . . . : Not supported
+
+    S.M.A.R.T. Details
+   --------------------
+    Off-line Data Collection Status  . . . . . . . . : Never Started
+    Self Test Execution Status . . . . . . . . . . . : Successfully Completed
+    Total Time To Complete Off-line Data Collection  : 0 seconds
+    Execute Off-line Immediate . . . . . . . . . . . : Supported
+    Abort/restart Off-line By Host . . . . . . . . . : Not supported
+    Off-line Read Scanning . . . . . . . . . . . . . : Not supported
+    Short Self-test  . . . . . . . . . . . . . . . . : Supported
+    Extended Self-test . . . . . . . . . . . . . . . : Supported
+    Conveyance Self-test . . . . . . . . . . . . . . : Supported
+    Selective Self-Test  . . . . . . . . . . . . . . : Supported
+    Save Data Before/After Power Saving Mode . . . . : Supported
+    Enable/Disable Attribute Autosave  . . . . . . . : Supported
+    Error Logging Capability . . . . . . . . . . . . : Supported
+    Short Self-test Estimated Time . . . . . . . . . : 1 minutes
+    Extended Self-test Estimated Time  . . . . . . . : 167 minutes
+    Conveyance Self-test Estimated Time  . . . . . . : 2 minutes
+    Last Short Self-test Result  . . . . . . . . . . : Never Started
+    Last Short Self-test Date  . . . . . . . . . . . : Never Started
+    Last Extended Self-test Result . . . . . . . . . : Never Started
+    Last Extended Self-test Date . . . . . . . . . . : Never Started
+    Last Conveyance Self-test Result . . . . . . . . : Never Started
+    Last Conveyance Self-test Date . . . . . . . . . : Never Started
+
+    Security Mode
+   ---------------
+    Security Mode  . . . . . . . . . . . . . . . . . : Supported
+    Security Erase . . . . . . . . . . . . . . . . . : Supported
+    Security Erase Time  . . . . . . . . . . . . . . : 168 minutes
+    Security Enhanced Erase Feature  . . . . . . . . : Supported
+    Security Enhanced Erase Time . . . . . . . . . . : 168 minutes
+    Security Enabled . . . . . . . . . . . . . . . . : No
+    Security Locked  . . . . . . . . . . . . . . . . : No
+    Security Frozen  . . . . . . . . . . . . . . . . : Yes
+    Security Counter Expired . . . . . . . . . . . . : No
+    Security Level . . . . . . . . . . . . . . . . . : High
+    Device Encrypts All User Data  . . . . . . . . . : No
+    Sanitize . . . . . . . . . . . . . . . . . . . . : Not supported
+    Overwrite  . . . . . . . . . . . . . . . . . . . : Not supported
+    Crypto Scramble  . . . . . . . . . . . . . . . . : Not supported
+    Block Erase  . . . . . . . . . . . . . . . . . . : Not supported
+    Sanitize Antifreeze Lock . . . . . . . . . . . . : Not supported
+    ACS-3 Commands Allowed By Sanitize . . . . . . . : No
+
+    Serial ATA Features
+   ---------------------
+    S-ATA Compliance . . . . . . . . . . . . . . . . : Yes
+    S-ATA I Signaling Speed (1.5 Gps)  . . . . . . . : Supported
+    S-ATA II Signaling Speed (3 Gps) . . . . . . . . : Supported
+    S-ATA Gen3 Signaling Speed (6 Gps) . . . . . . . : Supported
+    Receipt Of Power Management Requests From Host . : Not supported
+    PHY Event Counters . . . . . . . . . . . . . . . : Supported
+    Non-Zero Buffer Offsets In DMA Setup FIS . . . . : Not supported
+    DMA Setup Auto-Activate Optimization . . . . . . : Supported, Disabled
+    Device Initiating Interface Power Management . . : Supported, Disabled
+    In-Order Data Delivery . . . . . . . . . . . . . : Not supported
+    Asynchronous Notification  . . . . . . . . . . . : Not supported
+    Software Settings Preservation . . . . . . . . . : Supported, Enabled
+    Native Command Queuing (NCQ) . . . . . . . . . . : Supported
+    Queue Length . . . . . . . . . . . . . . . . . . : 32
+    NCQ Streaming  . . . . . . . . . . . . . . . . . : Not supported
+    NCQ Autosense  . . . . . . . . . . . . . . . . . : Not supported
+    Automatic Partial To Slumber Translations  . . . : Not supported
+    Rebuild Assist . . . . . . . . . . . . . . . . . : Not supported
+    Hybrid Information . . . . . . . . . . . . . . . : Not supported
+    Device Sleep (DevSleep)  . . . . . . . . . . . . : Not supported
+    DevSleep To ReducedPwrState  . . . . . . . . . . : Not supported
+
+    Disk Information
+   ------------------
+    Disk Family  . . . . . . . . . . . . . . . . . . : Mobile HDD 1000LM035
+    Form Factor  . . . . . . . . . . . . . . . . . . : 2.5" 
+    Capacity . . . . . . . . . . . . . . . . . . . . : 1 TB (1 x 1.000.000.000.000 bytes)
+    Number Of Disks  . . . . . . . . . . . . . . . . : 1
+    Number Of Heads  . . . . . . . . . . . . . . . . : 2
+    Rotational Speed . . . . . . . . . . . . . . . . : 5400 RPM
+    Rotation Time  . . . . . . . . . . . . . . . . . : 11,11 ms
+    Average Rotational Latency . . . . . . . . . . . : 5,56 ms
+    Disk Interface . . . . . . . . . . . . . . . . . : Serial-ATA/600
+    Buffer-Host Max. Rate  . . . . . . . . . . . . . : 600 MB/seconds
+    Buffer Size  . . . . . . . . . . . . . . . . . . : 131072 KB
+    Drive Ready Time (Typical) . . . . . . . . . . . : ? seconds
+    Average Seek Time  . . . . . . . . . . . . . . . : 13,0 ms
+    Track To Track Seek Time . . . . . . . . . . . . : ? ms
+    Full Stroke Seek Time  . . . . . . . . . . . . . : ? ms
+    Width  . . . . . . . . . . . . . . . . . . . . . : 69,9 mm (2,8 inch)
+    Depth  . . . . . . . . . . . . . . . . . . . . . : 100,4 mm (4,0 inch)
+    Height . . . . . . . . . . . . . . . . . . . . . : 7,0 mm (0,3 inch)
+    Weight . . . . . . . . . . . . . . . . . . . . . : 90 grams (0,2 pounds)
+    Acoustic (Idle)  . . . . . . . . . . . . . . . . : 2,3 Bel
+    Acoustic (Min Performance And Volume)  . . . . . : 2,5 Bel
+    Acoustic (Max Performance And Volume)  . . . . . : 3,0 Bel
+    Required Power For Spinup  . . . . . . . . . . . : 1.200 mA
+    Power Required (Seek)  . . . . . . . . . . . . . : 2,4 W
+    Power Required (Idle)  . . . . . . . . . . . . . : 1,2 W
+    Power Required (Standby) . . . . . . . . . . . . : 0,4 W
+    Manufacturer . . . . . . . . . . . . . . . . . . : Seagate Technology
+    Manufacturer Website . . . . . . . . . . . . . . : http://www.seagate.com/www/en-us/products
+
+    S.M.A.R.T.
+   ------------
+No.  Attribute                Thre.. Value  Worst  Data                Status                   Flags                                                  
+1    Raw Read Error Rate      34     80     53     00000BA191A6        OK                       Error-Rate, Performance, Statistical, Critical         
+3    Spin Up Time             0      99     99     000000000000        OK (Always passing)      Statistical, Critical                                  
+4    Start/Stop Count         20     37     37     00000000FFFF        OK                       Self Preserving, Event Count, Statistical              
+5    Reallocated Sectors Co.. 36     94     94     000000000318        OK                       Self Preserving, Event Count, Statistical, Critical    
+7    Seek Error Rate          45     88     60     0000246462A6        OK                       Error-Rate, Performance, Statistical, Critical         
+9    Power On Time Count      0      95     95     2C4800001299        OK (Always passing)      Self Preserving, Event Count, Statistical              
+10   Spin Retry Count         97     100    100    000000000000        OK                       Event Count, Statistical, Critical                     
+12   Drive Power Cycle Count  20     98     98     000000000985        OK                       Self Preserving, Event Count, Statistical              
+184  End-to-End Error Count   99     100    100    000000000000        OK                       Self Preserving, Event Count, Statistical              
+187  Reported Uncorrectable.. 0      49     49     000000000033        OK (Always passing)      Self Preserving, Event Count, Statistical              
+188  Command Timeout          0      100    97     00030003000C        OK (Always passing)      Self Preserving, Event Count, Statistical              
+189  High Fly Writes          0      100    100    000000000000        OK (Always passing)      Self Preserving, Event Count, Error-Rate, Statistical  
+190  Airflow Temperature      40     58     49     00002C1B002A        OK                       Self Preserving, Statistical                           
+191  G-Sense Error Rate       0      100    100    00000000018A        OK (Always passing)      Self Preserving, Event Count, Statistical              
+192  Power off Retract Cycl.. 0      100    100    00000000002D        OK (Always passing)      Self Preserving, Event Count, Statistical              
+193  Load/Unload Cycle Count  0      54     54     000000016D11        OK (Always passing)      Self Preserving, Event Count, Statistical              
+194  Disk Temperature         0      42     51     00160000002A        OK (Always passing)      Self Preserving, Statistical                           
+196  Reallocation Event Count 0      94     94     000000000318        OK (Always passing)      Self Preserving, Event Count, Statistical              
+197  Current Pending Sector.. 0      100    100    000000000008        OK (Always passing)      Event Count, Statistical                               
+198  Off-Line Uncorrectable.. 0      100    100    000000000008        OK (Always passing)      Event Count                                            
+199  Ultra ATA CRC Error Co.. 0      200    200    000000000000        OK (Always passing)      Self Preserving, Event Count, Error-Rate, Performanc.. 
+240  Head Flying Hours        30     95     95     5F350000121C        OK                       Error-Rate, Performance, Statistical, Critical         
+254  Free Fall Event Count    0      100    100    000000000000        OK (Always passing)      Self Preserving, Event Count, Statistical              
+
+    Transfer Rate Information
+   ---------------------------
+    Total Data Read  . . . . . . . . . . . . . . . . : 755 MB,  755 MB since installation  (03/07/2023)
+    Total Data Write . . . . . . . . . . . . . . . . : 1.379 MB,  1.379 MB since installation
+    Average Reads Per Day  . . . . . . . . . . . . . : 755,00 MB
+    Average Writes Per Day . . . . . . . . . . . . . : 1.379,00 MB
+    Current Transfer Rate  . . . . . . . . . . . . . : 742 KB/s
+    Maximum Transfer Rate  . . . . . . . . . . . . . : 32696 KB/s
+    Current Read Rate  . . . . . . . . . . . . . . . : 216 KB/s
+    Current Write Rate . . . . . . . . . . . . . . . : 526 KB/s
+    Current Disk Activity  . . . . . . . . . . . . . : 100 %
+
+
+
+  -- Partition Information --
+
+Logical Drive                           Total Space         Free Space          Free Space               Used Space
+C: (Disk: #0)                           136,1 GB            90,5 GB              66 %                    ######--------------
+D: Data (Disk: #0)                      794,8 GB            772,3 GB             97 %                    --------------------
+
+
+
+  -- System Management Information --
+
+
+    Motherboard Information
+   -------------------------
+    Manufacturer . . . . . . . . : LENOVO
+    Product  . . . . . . . . . . : LNVNB161216   No DPK
+    Serial Number  . . . . . . . : MP1M9KGJ
+    Asset Tag  . . . . . . . . . : NO Asset Tag   Type2 - Board Chassis Location
+    BIOS . . . . . . . . . . . . : LENOVO ver. 6UCN55WW(V4.10) [01/11/2019]
+    Memory Module 1  . . . . . . : 4096 MB [2400 MHz] BANK 0
+    Memory Module 2  . . . . . . : 4096 MB [2667 MHz] BANK 2
+
+    System Information
+   --------------------
+    Manufacturer . . . . . . . . : LENOVO
+    Product  . . . . . . . . . . : 81B0   Lenovo V330-14IKB
+    Serial Number  . . . . . . . : MP1M9KGJ
+    UUID . . . . . . . . . . . . : F39F67A5-06A9-E911-8102-9C5A446F2959
+    Chassis  . . . . . . . . . . : LENOVO ver. Lenovo V330-14IKB
+    Chassis Serial Number  . . . : MP1M9KGJ
+    Chassis Asset Tag  . . . . . : NO Asset Tag
+

@@ -13,7 +13,7 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
     <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/main.js', 'resources/js/app.js'])
+    @vite(['resources/css/app.css','resources/css/main.css', 'resources/js/main.js', 'resources/js/app.js'])
 </head>
 
 <body class="font-sans antialiased">
@@ -37,6 +37,9 @@
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"
         integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
         <script src="https://kit.fontawesome.com/6b37673df3.js" crossorigin="anonymous"></script>
+        {{-- <script src="https://cdn.ckeditor.com/ckeditor5/38.1.0/classic/ckeditor.js"></script> --}}
+        <script src="https://cdn.ckeditor.com/ckeditor5/38.1.0/balloon/ckeditor.js"></script>
+
     @stack('scripts')
 
 </body>

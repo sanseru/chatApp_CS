@@ -87,38 +87,40 @@
                     </div>
                     <input type="hidden" name="activeTabsInput" id="activeTabsInput">
                     <div id="myTabContent" class="w-full p-3">
-                        <div class="flex flex-row">
-                            <div class="basis-2/4">
-                                <select id="users"
-                                    class="block w-full p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    <option value='' selected>Choose a User</option>
-                                    @foreach ($users as $user)
-                                        @if ($user->id != auth()->id())
-                                            <option value="{{ $user->id }}">{{ $user->name }}</option>
-                                        @endif
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="basis-2/4 ml-2">
-                                <select id="days"
-                                    class="block w-full p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    <option value='1' selected>7 Days</option>
-                                    <option value='2'>Today</option>
-                                    <option value="3">Yesterday & Today</option>
-                                    <option value="4">1 Month</option>
-                                    <option value="5">2 Month</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="profile" role="tabpanel"
+                        <div class="hidden p-2 rounded-lg bg-gray-50 dark:bg-gray-800" id="profile" role="tabpanel"
                             aria-labelledby="profile-tab">
+                            <div class="flex flex-row drop-shadow-xl">
+                                <div class="basis-2/4">
+                                    <select id="users"
+                                        class="block bg-white w-full p-2 mb-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <option value='' selected>Choose a User</option>
+                                        @foreach ($users as $user)
+                                            @if ($user->id != auth()->id())
+                                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="basis-2/4 ml-2">
+                                    <select id="days"
+                                        class="block bg-white w-full p-2 mb-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <option value='1' selected>7 Days</option>
+                                        <option value='2'>Today</option>
+                                        <option value="3">Yesterday & Today</option>
+                                        <option value="4">1 Month</option>
+                                        <option value="5">2 Month</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class=" w-full overflow-y-auto h-80" id="chatContainer">
                             </div>
                             <div class="mt-5">
                                 <form>
                                     <label for="chat" class="sr-only">Your message</label>
+                                    <input type="file" id="fileInput" multiple>
+
                                     <div class="flex items-center px-3 py-2 rounded-lg bg-gray-300 dark:bg-gray-700">
-                                        <button type="button"
+                                        <button type="button" onclick="document.getElementById('fileInput').click();"
                                             class="inline-flex justify-center p-2 text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
                                             <i class="fa fa-paperclip"></i>
                                             <span class="sr-only">Upload image</span>
@@ -133,9 +135,17 @@
                                             </svg>
                                             <span class="sr-only">Add emoji</span>
                                         </button> -->
-                                        <textarea id="chatMessagetext" rows="1"
+                                        {{-- <textarea id="chatMessagetext" rows="1"
                                             class="block mx-4 p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                            placeholder="Your message..."></textarea>
+                                            placeholder="Your message..."></textarea> --}}
+
+                                        <div
+                                            class="block mx-4 p-2.5 w-64 text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                            <div id="chatMessagetext">
+                                            </div>
+                                        </div>
+
+
                                         <button type="button" id="sendMessageBtn"
                                             class="inline-flex justify-center p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100 dark:text-blue-500 dark:hover:bg-gray-600">
                                             <svg aria-hidden="true" class="w-6 h-6 rotate-90" fill="currentColor"
@@ -430,6 +440,17 @@
             var filter = '';
             var search = '';
 
+
+            function handleFileSelect(event) {
+                var files = event.target.files;
+                var output = document.getElementById("output");
+
+                for (var i = 0; i < files.length; i++) {
+                    var file = files[i];
+                    output.innerHTML += '<li>' + file.name + '</li>';
+                }
+            }
+
             function searchChat() {
                 search = true;
                 filter = '';
@@ -588,12 +609,27 @@
                 var senderInfo = $('<div></div>').addClass('text-sm fs-7').text(
                     chat.user_from.name + '  - ' + formatDate(chat.created_at));
 
-                // Create the chat message element
-                var message = $('<p></p>').addClass(
-                        'max-w-[19rem] break-words border rounded-lg p-2 bg-white text-start text-wrap ms-5 card card-body bg-green-200'
-                    )
-                    .text(chat
-                        .message);
+
+
+                if (chat.is_file == 1) {
+
+                    var message = $('<div></div>').addClass(
+                        'border rounded-lg p-2 bg-white text-start text-wrap ms-5 card card-body bg-green-200 chatright');
+
+                    var href = $('<a></a>')
+                        .text(chat.message)
+                        .attr('href', '/uploads/' + chat.message)
+                        .attr('target', '_blank');
+                    message.append(href);
+
+                } else {
+                    // Create the chat message element
+                    var message = $('<p></p>').addClass(
+                            'max-w-[19rem] break-words border rounded-lg p-2 bg-white text-start text-wrap ms-5 card card-body bg-green-200 chatright'
+                        )
+                        .html(chat
+                            .message);
+                }
 
                 // Append sender info to inner container
                 innerDiv.append(senderInfo);
@@ -617,11 +653,22 @@
                 var senderInfo = $('<div></div>').addClass('text-sm fs-7').text(
                     chat.userFrom.name + '  - ' + formatDate(chat.created_at));
 
-                // Create the chat message element
-                var message = $('<p></p>').addClass(
-                        'border rounded-lg p-2 bg-white text-start text-wrap ms-5 card card-body bg-green-200')
-                    .text(chat
-                        .message);
+                if (chat.is_file == 1) {
+                    var message = $('<a></a>').addClass(
+                            'border rounded-lg p-2 bg-white text-start text-wrap ms-5 card card-body bg-green-200')
+                        .text(chat.message)
+                        .attr('href', '/uploads/' + chat.file_name)
+                        .attr('target', '_blank');
+                } else {
+                    // Create the chat message element
+                    var message = $('<p></p>').addClass(
+                            'border rounded-lg p-2 bg-white text-start text-wrap ms-5 card card-body bg-green-200')
+                        .text(chat
+                            .message);
+                }
+
+
+
 
                 // Append sender info to inner container
                 innerDiv.append(senderInfo);
@@ -685,9 +732,45 @@
                 fetchChats();
             });
 
+            $('#fileInput').on('change', function() {
+                var formData = new FormData();
+                formData.append('fileInput', $('#fileInput')[0].files[0]);
+                var csrfToken = $('meta[name="csrf-token"]').attr('content');
+                var to = $('#users').val();
+                formData.append('to', to);
+
+                if (to == '' || to == undefined) {
+                    $('#fileInput').val(null); // Reset the file input field
+                    return alert('Pilih User Terlebih Dahulu Yang Ingin Dikirim');
+                }
+                $.ajax({
+                    url: "{{ route('uploadfilechat') }}",
+                    type: "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken // Set the CSRF token in the request header
+                    },
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        alert(response);
+                        $('#fileInput').val(null); // Reset the file input field
+                        fetchChats();
+
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(xhr.responseText);
+                    }
+                });
+            });
+
+
+
             $('#sendMessageBtn').on('click', function() {
                 // Get the message content from the user input or other source
-                var message = $('#chatMessagetext').val();
+                // var message = $('#chatMessagetext').val();
+                const message = myEditor.getData(); // Get CKEditor value
+                console.log(message);
                 var to = $('#users').val();
 
                 if (to == '' || to == undefined) {
@@ -710,6 +793,7 @@
                         // Handle the success response from the controller
                         console.log('Message saved successfully');
                         $('#chatMessagetext').val('');
+                        myEditor.setData('');
                         // chatRightAdd(response.message);
                         fetchChats();
 
@@ -731,20 +815,40 @@
                         cekUnReadWidget();
                     }
                 }, 3000); // Panggil fetchChats setiap 5 detik (5000 milidetik)
+                BalloonEditor
+                    .create(document.querySelector('#chatMessagetext'), {
+                        width: '100%',
+                        placeholder: "Message...", // Set the placeholder text
+                        toolbar: {
+                            items: [
+                                'link',
+                                // More toolbar items.
+                                // ...
+                            ],
+                        },
+                        toolbarSize: "10px", // Set the toolbar size to small
+                        link: {
+                            // Automatically add target="_blank" and rel="noopener noreferrer" to all external links.
+                            addTargetToExternalLinks: true,
+
+                            // Let the users control the "download" attribute of each link.
+                            decorators: [{
+                                mode: 'manual',
+                                label: 'Downloadable',
+                                attributes: {
+                                    download: 'download'
+                                }
+                            }]
+                        }
+                    })
+                    .then(editor => {
+                        console.log('Editor was initialized', editor);
+                        myEditor = editor;
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
             });
         </script>
     @endpush
-
-    {{-- <div class="bg-gray-100">
-
-        <div class="container flex justify-center items-center h-screen">
-
-         
-
-
-
-
-        </div>
-
-    </div> --}}
 </x-app-layout>

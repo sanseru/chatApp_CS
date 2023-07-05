@@ -1,0 +1,12 @@
+.chatright a {
+    color: blue;
+    text-decoration: underline;
+}
+
+.ck.ck-toolbar.ck-toolbar_grouping>.ck-toolbar__items {
+    flex-wrap: nowrap;
+    max-height: 20px;
+}
+#fileInput {
+    display: none;
+}

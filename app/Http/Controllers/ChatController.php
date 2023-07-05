@@ -116,19 +116,10 @@ class ChatController extends Controller
                             $query->where('chats.from', Auth::id())->where('chats.to', $userId);
                         });
                 });
-
-                // ->orWhere('from', Auth::id())
-                // ->whereIn('to', [$userId, Auth::id()]);
             })
             ->when($filter == true && $searchInput, function ($query) use ($searchInput) {
                 return $query->where('message', 'like', '%' . $searchInput . '%');
-            })
-
-            // ->when($search == true && $searchInput, function ($query) use ($searchInput) {
-            //     return $query->where('message', 'like', '%' . $searchInput . '%')
-            //     ->offset(1)
-            //     ->limit(1);
-            // })
+            })       
             ->orderBy('created_at', 'asc')
             ->get();
 
@@ -153,4 +144,29 @@ class ChatController extends Controller
             ->where('isread', 0)
             ->update(['isread' => 1]);
     }
+
+    public function uploadFileChat(Request $request)
+    {
+        if ($request->hasFile('fileInput')) {
+            $file = $request->file('fileInput');
+            $filename = $file->getClientOriginalName();
+            $file->storeAs('uploads', $filename, 'public'); // Save the file to the 'uploads' folder
+
+            $message = Chat::create([
+                'message' => $filename,
+                'from' => Auth::id(),
+                'to' => $request->input('to'),
+                'isread' => 0,
+                'is_file' => 1,
+            ]);
+
+            return 'File uploaded successfully.';
+        } else {
+            return 'No file selected.';
+        }
+    }
+
+    // public function fileRead(){
+    //     $url = Storage::url(public_path('uploads/'));
+    // }
 }
