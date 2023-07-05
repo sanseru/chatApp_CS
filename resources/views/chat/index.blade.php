@@ -57,9 +57,13 @@
                         <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="myTab"
                             data-tabs-toggle="#myTabContent" role="tablist">
                             <li class="mr-2" role="presentation">
-                                <button class="inline-block p-4 border-b-2 rounded-t-lg" id="profile-tab"
+                                <button class="inline-block relative p-4 border-b-2 rounded-t-lg" id="profile-tab"
                                     data-tabs-target="#profile" type="button" role="tab" aria-controls="profile"
-                                    aria-selected="false">Conversation</button>
+                                    aria-selected="false">Conversation
+                                    <div id="coversationCount"
+                                        class="absolute  inline-flex items-center justify-center w-6 h-5 text-xs font-bold text-white bg-red-500 border-2  border-white rounded-full left-22 top-0.5 right-1 dark:border-gray-900">
+                                    0</div>
+                                </button>
                             </li>
                             <li class="mr-2" role="presentation">
                                 <button
@@ -81,6 +85,7 @@
                             </li>
                         </ul>
                     </div>
+                    <input type="hidden" name="activeTabsInput" id="activeTabsInput">
                     <div id="myTabContent" class="w-full p-3">
                         <div class="flex flex-row">
                             <div class="basis-2/4">
@@ -108,41 +113,6 @@
                         <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="profile" role="tabpanel"
                             aria-labelledby="profile-tab">
                             <div class=" w-full overflow-y-auto h-80" id="chatContainer">
-                                {{-- <div class="">
-                                    <div class="text-sm fs-7">Haris Lukman Hakim 12/06/2023 14:28 PM</div>
-                                    <p class="border rounded-lg p-2 text-wrap me-5 card card-body bg-white">Lorem ipsum
-                                        dolor sit amet,
-                                        consectetur adipiscing elit,</p>
-                                </div> --}}
-                                {{-- <div class="ml-5 mt-3">
-                                    <div class="text-end">
-                                        <div class="text-sm fs-7">Haris Lukman Hakim 12/06/2023 14:28 PM</div>
-                                        <p
-                                            class="border rounded-lg p-2 bg-white text-start text-wrap ms-5 card card-body">
-                                            Lorem ipsum dolor sit
-                                            amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                                            labore et
-                                            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                                            ullamco
-                                            laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-                                            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                                            pariatur.
-                                            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-                                            deserunt mollit anim id est laborum.</p>
-                                    </div>
-                                </div> --}}
-                                {{-- <div class="mt-3">
-                                    <div class="text-sm fs-7">Haris Lukman Hakim 12/06/2023 14:28 PM</div>
-                                    <p class="border rounded-lg p-2 text-wrap me-5 card card-body bg-white">Lorem ipsum
-                                        dolor sit amet,
-                                        consectetur adipiscing elit,</p>
-                                </div>
-                                <div class="mt-3">
-                                    <div class="text-sm fs-7">Haris Lukman Hakim 12/06/2023 14:28 PM</div>
-                                    <p class="border rounded-lg p-2 text-wrap me-5 card card-body bg-white">Lorem ipsum
-                                        dolor sit amet,
-                                        consectetur adipiscing elit,</p>
-                                </div> --}}
                             </div>
                             <div class="mt-5">
                                 <form>
@@ -206,14 +176,16 @@
     </div>
     @push('scripts')
         <script>
-            var filter = '' ;
+            var filter = '';
             var search = '';
+
             function searchChat() {
                 search = true;
                 filter = '';
 
                 fetchChats();
             }
+
             function filterChat() {
                 filter = true;
                 search = '';
@@ -224,6 +196,8 @@
                 var user = $('#users').val();
                 var searchInput = $('#searchInput').val();
                 var days = $('#days').val();
+
+                var getActiveTab = $('#activeTabsInput').val();
 
 
 
@@ -267,6 +241,38 @@
                     success: function(response) {
                         if (response > 0) {
                             fetchChats();
+                        }
+                        cekUnReadWidget();
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+
+            }
+
+            function cekUnReadWidget() {
+                $.ajax({
+                    url: 'chat/unread/all',
+                    method: 'GET',
+                    success: function(response) {
+                        if (response > 0) {
+                            // Use jQuery to select the element by its ID
+                            var conversationCount = $('#coversationCount');
+                            var classToRemove = 'hidden';
+
+                            // Set the new count using the text() function
+                            conversationCount.text(response);
+                            conversationCount.removeClass(classToRemove);
+
+                        }else{
+                            var conversationCount = $('#coversationCount');
+                            var newClass = 'hidden';
+
+                            conversationCount.addClass(function(index, currentClasses) {
+                            return currentClasses + ' ' + newClass;
+                            });
+
                         }
                     },
                     error: function(error) {
@@ -333,7 +339,8 @@
 
                 // Create the chat message element
                 var message = $('<p></p>').addClass(
-                        'max-w-[19rem] break-words border rounded-lg p-2 bg-white text-start text-wrap ms-5 card card-body bg-green-200')
+                        'max-w-[19rem] break-words border rounded-lg p-2 bg-white text-start text-wrap ms-5 card card-body bg-green-200'
+                    )
                     .text(chat
                         .message);
 
@@ -345,9 +352,6 @@
 
                 // Append parent container to the desired location in the DOM
                 $('#chatContainer').append(parentDiv);
-
-
-                console.log(formatDateReturn(lastTime));
 
             }
 
@@ -467,19 +471,15 @@
             });
             $(document).ready(function() {
                 var lastTime;
-
-
-
                 fetchChats();
-
-
                 setInterval(() => {
-                    cekUnRead();
+                    var getActiveTab = $('#activeTabsInput').val();
+                    if (getActiveTab == 'profile') {
+                        cekUnRead();
+                    }else{
+                        cekUnReadWidget();
+                    }
                 }, 3000); // Panggil fetchChats setiap 5 detik (5000 milidetik)
-
-
-
-
             });
         </script>
     @endpush

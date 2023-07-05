@@ -6,7 +6,7 @@ use App\Models\Chat;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Carbon\Carbon;
 class ChatController extends Controller
 {
     /**
@@ -38,11 +38,12 @@ class ChatController extends Controller
             'from' => Auth::id(),
             'to' => $request->input('to'),
             'isread' => 0,
-
         ]);
         $chatId = $message->id;
 
-        $data = Chat::with('user', 'userFrom')->where('id',$chatId)->first();
+        $data = Chat::with('user', 'userFrom')
+            ->where('id', $chatId)
+            ->first();
         return response()->json(['status' => 'success', 'message' => $data]);
     }
 
@@ -86,20 +87,9 @@ class ChatController extends Controller
         $filter = $request->input('filter');
         $dateFilter = $request->input('days');
 
-
         $data = Chat::with('user', 'userFrom')
-            ->when($userId, function ($query, $userId) {
-                return $query->where('from', $userId)
-                    ->orWhere('from', Auth::id())
-                    ->whereIn('to', [$userId, Auth::id()]);
-            })
-            ->when($filter == true && $searchInput, function ($query) use ($searchInput) {
-                return $query->where('message', 'like', '%' . $searchInput . '%');
-            })
-
             ->when($dateFilter, function ($query) use ($dateFilter) {
                 $now = now()->startOfDay();
-                
                 if ($dateFilter === '1') {
                     $date = $now->subDays(6);
                     return $query->where('created_at', '>=', $date);
@@ -116,6 +106,24 @@ class ChatController extends Controller
                     return $query->where('created_at', '>=', $twoMonthsAgo);
                 }
             })
+            ->when($userId, function ($query, $userId) {
+                return $query->where(function ($query) use ($userId) {
+                    return $query
+                        ->where(function ($query) use ($userId) {
+                            $query->where('chats.from', $userId)->where('chats.to', Auth::id());
+                        })
+                        ->orWhere(function ($query) use ($userId) {
+                            $query->where('chats.from', Auth::id())->where('chats.to', $userId);
+                        });
+                });
+
+                // ->orWhere('from', Auth::id())
+                // ->whereIn('to', [$userId, Auth::id()]);
+            })
+            ->when($filter == true && $searchInput, function ($query) use ($searchInput) {
+                return $query->where('message', 'like', '%' . $searchInput . '%');
+            })
+
             // ->when($search == true && $searchInput, function ($query) use ($searchInput) {
             //     return $query->where('message', 'like', '%' . $searchInput . '%')
             //     ->offset(1)
@@ -125,18 +133,24 @@ class ChatController extends Controller
             ->get();
 
         $this->readChat();
-        
+
         return $data;
     }
 
     public function unRead(Request $request)
     {
-        $data = Chat::latest()->where('to', Auth::id())->where('isread' , 0)->take(100)
+        $data = Chat::latest()
+            ->where('to', Auth::id())
+            ->where('isread', 0)
+            ->take(100)
             ->count();
         return $data;
     }
 
-    public function readChat(){
-        return Chat::where('to', Auth::id())->where('isread', 0)->update(['isread' => 1]);
+    public function readChat()
+    {
+        return Chat::where('to', Auth::id())
+            ->where('isread', 0)
+            ->update(['isread' => 1]);
     }
 }
