@@ -582,11 +582,27 @@
                 senderInfo.append(senderInfo, replyButton)
 
 
-                // Create the chat message element
+
+                if (chat.is_file == 1) {
+
+                    var message = $('<div></div>').addClass(
+                        'border rounded-lg p-2 bg-white text-start text-wrap ms-5 card card-body bg-green-200 chatright');
+
+                    var href = $('<a></a>')
+                        .text(chat.message)
+                        .attr('href', '/uploads/' + chat.message)
+                        .attr('target', '_blank');
+                    message.append(href);
+
+                } else {
+                                 // Create the chat message element
                 var message = $('<p></p>').addClass(
                         'max-w-[19rem] break-words border rounded-lg p-2 text-wrap me-5 card card-body bg-blue-100')
-                    .text(chat
+                    .html(chat
                         .message);
+                }
+
+
 
 
                 // Append inner container and message to parent container
