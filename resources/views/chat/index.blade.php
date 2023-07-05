@@ -72,7 +72,7 @@
                                     aria-controls="dashboard" aria-selected="false">
                                     Notification
                                     <div
-                                        class="absolute inline-flex items-center justify-center w-6 h-5 text-xs font-bold text-white bg-red-500 border-2  border-white rounded-full left-22 top-0.5 right-1 dark:border-gray-900">
+                                        class="animate-bounce absolute inline-flex items-center justify-center w-6 h-5 text-xs font-bold text-white bg-red-500 border-2  border-white rounded-full left-22 top-0.5 right-1 dark:border-gray-900">
                                         20</div>
                                 </button>
 
