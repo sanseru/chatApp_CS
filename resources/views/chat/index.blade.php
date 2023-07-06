@@ -4,7 +4,7 @@
             {{ __('Dashboard') }}
         </h2>
     </x-slot>
-    <div class="py-12">
+    <div class="py-2">
         <div class="max-w-md mx-auto sm:px-6 lg:px-1">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="flex flex-row">
