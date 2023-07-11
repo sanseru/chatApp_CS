@@ -149,3 +149,57 @@ BalloonEditor.create(document.querySelector("#chatMessagetextRight"), {
     .catch((error) => {
         console.error(error);
     });
+
+// function loadEmails() {
+//     axios
+//         .get("/chat/showchats/all")
+//         .then(function (response) {
+//             // Clear the email list
+//             $("#chatContainer").empty();
+
+//             // Append each email item to the list
+//             response.data.forEach(function (email) {
+//                 var listItem =
+//                     '<li x-data="{ countMessage: ' +
+//                     email.countMessage +
+//                     ' }" ' +
+//                     'class="pl-2 py-2 cursor-pointer drop-shadow-lg mb-2 block max-w-sm p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700" ' +
+//                     'data-id="Uji Coba" data-name="' +
+//                     email.name +
+//                     '" id="' +
+//                     email.id +
+//                     '">' +
+//                     '<div class="flex">' +
+//                     '<div class="mr-4 flex items-stretch">' +
+//                     '<img src="{{ asset(\'profiles/60111.jpg\') }}" alt="Image" class="w-10 h-15 self-center">' +
+//                     "</div>" +
+//                     '<div class="w-full">' +
+//                     '<p class="text-xs font-medium"><strong>Subject</strong>: ' +
+//                     '<span class="text-xs">' +
+//                     email.name +
+//                     "</span>" +
+//                     "</p>" +
+//                     '<p class="text-xs font-medium">With: ' +
+//                     email.with +
+//                     "</p>" +
+//                     '<p class="text-xs font-bold">' +
+//                     email.dateRange +
+//                     "</p>" +
+//                     "</div>" +
+//                     '<div class="flex items-stretch">' +
+//                     '<span class=" w-5 h-5 self-center" onclick="alert(\'klikini\')" x-show="countMessage > 0">' +
+//                     '<i class="fa-solid fa-chevron-right"></i>' +
+//                     "</span>" +
+//                     "</div>" +
+//                     "</div>" +
+//                     "</li>";
+
+//                 $("#chatContainer").append(listItem);
+//             });
+//         })
+//         .catch(function (error) {
+//             console.error(error);
+//         });
+// }
+
+// loadEmails();

@@ -13,7 +13,7 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
     <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/css/main.css', 'resources/js/main.js', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/css/main.css', 'resources/js/app.js', 'resources/js/main.js'])
 </head>
 
 <body class="font-sans antialiased">
@@ -402,7 +402,7 @@
                     x-transition:leave="transform transition-transform duration-300"
                     x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-full"
                     x-show="isSettingsPanelOpen"
-                    class="fixed inset-y-0 right-0 w-90 bg-white border-l border-indigo-100 rounded-l-3xl">
+                    class="fixed overflow-auto min-h-screen inset-y-0 right-0 w-90 bg-white border-l border-indigo-100 rounded-l-3xl">
                     <div class="px-4 py-5">
                         <h2 class="text-lg font-semibold">Settings</h2>
                     </div>

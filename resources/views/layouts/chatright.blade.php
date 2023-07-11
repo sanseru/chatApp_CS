@@ -1,11 +1,3 @@
-<?php
-
-use Faker\Factory as Faker;
-use Carbon\Carbon;
-
-$faker = Faker::create();
-
-?>
 <div class="p-2 rounded-lg bg-gray-50 dark:bg-gray-800">
     <div class="max-w-sm p-3 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
         <div class="mb-2 border-b border-gray-200 dark:border-gray-700">
@@ -42,7 +34,7 @@ $faker = Faker::create();
         </div>
         <input type="hidden" name="activeTabsInput" id="activeTabsInput">
 
-        <div id="myTabContent" class="w-full p-1 overflow-auto max-h-[33rem]">
+        <div id="myTabContent" class="w-full p-1 overflow-auto"> {{--  max-h-[36rem] --}}
             <div class="hidden p-0 overflow-auto rounded-lg bg-gray-50 dark:bg-gray-800" id="profile" role="tabpanel"
                 aria-labelledby="profile-tab">
                 <div class="flex flex-row drop-shadow-xl">
@@ -85,43 +77,7 @@ $faker = Faker::create();
                 </div>
                 <div class=" w-full overflow-y-auto h-80">
                     <ul class="p-1" id="chatContainer">
-                        @for ($i = 0; $i < 100; $i++)
-                            @php
-                                $countMessage = rand(0, 3);
-                                $name = $faker->sentence($nbWords = 6, $variableNbWords = true);
-                            @endphp
-                            {{-- x-data="{ countMessage: {{ $countMessage }} }" --}}
-                            {{-- x-data="{ selected: false }" @click="selected = !selected" :class="{ 'selected': selected }" --}}
-                            <li x-data="{ countMessage: {{ $countMessage }} }"
-                                class="pl-2 py-2 cursor-pointer drop-shadow-lg mb-2 block max-w-sm p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
-                                data-id="Uji Coba" data-name="{{ $name }}" id="{{ $i }}">
-                                <div class="flex">
-                                    <div class="mr-4 flex items-stretch">
-                                        <img src="{{ asset('profiles/60111.jpg') }}" alt="Image"
-                                            class="w-10 h-15 self-center">
-                                    </div>
-                                    <div class="w-full">
-                                        <p class="text-xs font-medium"><strong>Subject</strong>:
-                                            <span class="text-xs">{{ $name }}</span>
-                                        </p>
-                                        <p class="text-xs font-medium">With: {{ $faker->name }}</p>
-                                        <p class="text-xs font-bold">
-                                            @php
-                                                $now = \Carbon\Carbon::now();
-                                                $futureDate = $now->addDays(7);
-                                                echo $now->format('d-m-y h:i:s') . ' - ' . $futureDate->format('d-m-y h:i:s');
-                                            @endphp
-                                        </p>
-                                    </div>
-                                    <div class="flex items-stretch">
-                                        <span class=" w-5 h-5 self-center" onclick="alert('klikini')"
-                                            x-show="countMessage > 0">
-                                            <i class="fa-solid fa-chevron-right"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                            </li>
-                        @endfor
+                        <p class="my-8">Fetch Data</p>
                     </ul>
 
                 </div>
@@ -478,3 +434,51 @@ $faker = Faker::create();
         alert(masukPak);
     }
 </script>
+
+
+@push('scripts')
+    <script>
+        function loadEmails() {
+            $.ajax({
+                url: '/chat/showchats/all',
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    // Clear the email list
+                    $('#chatContainer').empty();
+                    // console.log(response);
+                    // Append each email item to the list
+                    response.forEach(function(email) {
+
+                        var listItem = '<li x-data="{ countMessage: ' + email.countMessage + ' }" ' +
+                            'class="pl-2 py-2 cursor-pointer drop-shadow-lg mb-2 block max-w-sm p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700" ' +
+                            'data-id="Uji Coba" data-name="' + email.name + '" id="' + email.id + '">' +
+                            '<div class="flex">' +
+                            '<div class="mr-4 flex items-stretch">' +
+                            '<img src="{{ asset('profiles/60111.jpg') }}" alt="Image" class="w-10 h-15 self-center">' +
+                            '</div>' +
+                            '<div class="w-full">' +
+                            '<p class="text-xs font-medium"><strong>Subject</strong>: ' +
+                            '<span class="text-xs">' + email.name + '</span>' +
+                            '</p>' +
+                            '<p class="text-xs font-medium">With: ' + email.with + '</p>' +
+                            '<p class="text-xs font-bold">' + email.dateRange + '</p>' +
+                            '</div>' +
+                            '<div class="flex items-stretch">' +
+                            '<span class=" w-5 h-5 self-center" onclick="alert(\'klikini\')" x-show="countMessage > 0">' +
+                            '<i class="fa-solid fa-chevron-right"></i>' +
+                            '</span>' +
+                            '</div>' +
+                            '</div>' +
+                            '</li>';
+                        $('#chatContainer').append(listItem);
+                    });
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            loadEmails();
+        });
+    </script>
+@endpush
