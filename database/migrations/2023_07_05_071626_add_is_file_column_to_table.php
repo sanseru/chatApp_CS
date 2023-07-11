@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::table('chats', function (Blueprint $table) {
             $table->boolean('is_file')->default(0);
+            $table->text('subject');
+            $table->text('replyUuid');
+            $table->boolean('is_important')->default(0);
+            $table->boolean('res_req')->default(0);
+            $table->boolean('withdraw')->default(0);
         });
     }
 

@@ -7,9 +7,7 @@ $faker = Faker::create();
 
 ?>
 <div class="p-2 rounded-lg bg-gray-50 dark:bg-gray-800">
-
-
-    <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+    <div class="max-w-sm p-3 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
         <div class="mb-2 border-b border-gray-200 dark:border-gray-700">
             <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="myTab"
                 data-tabs-toggle="#myTabContent" role="tablist">
@@ -44,19 +42,17 @@ $faker = Faker::create();
         </div>
         <input type="hidden" name="activeTabsInput" id="activeTabsInput">
 
-        <div id="myTabContent" class="w-full p-1">
-            <div class="hidden p-0 rounded-lg bg-gray-50 dark:bg-gray-800" id="profile" role="tabpanel"
+        <div id="myTabContent" class="w-full p-1 overflow-auto max-h-[33rem]">
+            <div class="hidden p-0 overflow-auto rounded-lg bg-gray-50 dark:bg-gray-800" id="profile" role="tabpanel"
                 aria-labelledby="profile-tab">
                 <div class="flex flex-row drop-shadow-xl">
                     <div class="basis-2/4">
                         <select id="users"
                             class="block w-full p-1 mb-2 text-xs pl-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option value='' selected>Choose a User</option>
-                            {{-- @foreach ($users as $user)
-                                @if ($user->id != auth()->id())
-                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
-                                @endif
-                            @endforeach --}}
+                            @foreach (\App\Models\User::all() as $user)
+                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="basis-2/4 ml-2">
@@ -72,28 +68,33 @@ $faker = Faker::create();
                 </div>
                 <div class="flex row justify-start ml-4">
                     <div id="burger-button" class="relative w-8 h-8 cursor-pointer">
-                      <i class="fas fa-bars text-xs"></i>
-                      <div id="options" class="hidden w-28 text-sm absolute right-0 mt-2 bg-white rounded shadow-md">
-                        <ul class="py-2 px-1">
-                          <li class="rounded-full text-xs hover:bg-blue-500"><a href="#" class="block ml-2 py-2 hover:text-white ">Option 1</a></li>
-                          <li class="rounded-full text-xs hover:bg-blue-500"><a href="#" class="block ml-2 py-2 hover:text-white ">Option 2</a></li>
-                          <li class="rounded-full text-xs hover:bg-blue-500"><a href="#" class="block ml-2 py-2 hover:text-white ">Option 3</a></li>
-                        </ul>
-                      </div>
+                        <i class="fas fa-bars text-xs"></i>
+                        <div id="options"
+                            class="hidden w-28 text-sm absolute right-30 mt-2 bg-white rounded shadow-md">
+                            <ul class="py-2 px-1">
+                                <li class="rounded-full text-xs hover:bg-blue-500"><a href="#"
+                                        class="block ml-2 py-2 hover:text-white ">Option 1</a></li>
+                                <li class="rounded-full text-xs hover:bg-blue-500"><a href="#"
+                                        class="block ml-2 py-2 hover:text-white ">Option 2</a></li>
+                                <li class="rounded-full text-xs hover:bg-blue-500"><a href="#"
+                                        class="block ml-2 py-2 hover:text-white ">Option 3</a></li>
+                            </ul>
+                        </div>
                     </div>
                     <div id="listSubjectActive" class="text-sm font-extrabold grid content-center"></div>
-                  </div>
+                </div>
                 <div class=" w-full overflow-y-auto h-80">
                     <ul class="p-1" id="chatContainer">
                         @for ($i = 0; $i < 100; $i++)
-                        @php
-                            $countMessage = rand(0, 3);
-                            $name =  $faker->sentence($nbWords = 6, $variableNbWords = true) ;
-                        @endphp
-                        {{-- x-data="{ countMessage: {{ $countMessage }} }" --}}
-                        {{-- x-data="{ selected: false }" @click="selected = !selected" :class="{ 'selected': selected }" --}}
-                            <li x-data="{ countMessage: {{ $countMessage }} }" class="pl-2 py-2 cursor-pointer drop-shadow-lg mb-2 block max-w-sm p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
-                                data-id="Uji Coba" data-name="{{$name}}" id="{{$i}}">
+                            @php
+                                $countMessage = rand(0, 3);
+                                $name = $faker->sentence($nbWords = 6, $variableNbWords = true);
+                            @endphp
+                            {{-- x-data="{ countMessage: {{ $countMessage }} }" --}}
+                            {{-- x-data="{ selected: false }" @click="selected = !selected" :class="{ 'selected': selected }" --}}
+                            <li x-data="{ countMessage: {{ $countMessage }} }"
+                                class="pl-2 py-2 cursor-pointer drop-shadow-lg mb-2 block max-w-sm p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
+                                data-id="Uji Coba" data-name="{{ $name }}" id="{{ $i }}">
                                 <div class="flex">
                                     <div class="mr-4 flex items-stretch">
                                         <img src="{{ asset('profiles/60111.jpg') }}" alt="Image"
@@ -101,8 +102,7 @@ $faker = Faker::create();
                                     </div>
                                     <div class="w-full">
                                         <p class="text-xs font-medium"><strong>Subject</strong>:
-                                            <span
-                                                class="text-xs">{{$name}}</span>
+                                            <span class="text-xs">{{ $name }}</span>
                                         </p>
                                         <p class="text-xs font-medium">With: {{ $faker->name }}</p>
                                         <p class="text-xs font-bold">
@@ -114,9 +114,10 @@ $faker = Faker::create();
                                         </p>
                                     </div>
                                     <div class="flex items-stretch">
-                                       <span class=" w-5 h-5 self-center" onclick="alert('klikini')" x-show="countMessage > 0">
-                                        <i class="fa-solid fa-chevron-right"></i>
-                                       </span>
+                                        <span class=" w-5 h-5 self-center" onclick="alert('klikini')"
+                                            x-show="countMessage > 0">
+                                            <i class="fa-solid fa-chevron-right"></i>
+                                        </span>
                                     </div>
                                 </div>
                             </li>
@@ -128,45 +129,80 @@ $faker = Faker::create();
                     <form>
                         <label for="chat" class="sr-only">Your message</label>
                         <input type="file" id="fileInput" multiple>
-
                         <div class="flex items-center px-3 py-2 rounded-lg bg-gray-300 dark:bg-gray-700">
-                            <button type="button" onclick="document.getElementById('fileInput').click();"
-                                class="inline-flex justify-center p-2 text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
-                                <i class="fa fa-paperclip"></i>
-                                <span class="sr-only">Upload image</span>
-                            </button>
-                            <!-- <button type="button"
-                            class="p-2 text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
-                            <svg aria-hidden="true" class="w-6 h-6" fill="currentColor"
-                                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zm-.464 5.535a1 1 0 10-1.415-1.414 3 3 0 01-4.242 0 1 1 0 00-1.415 1.414 5 5 0 007.072 0z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
-                            <span class="sr-only">Add emoji</span>
-                        </button> -->
-                            {{-- <textarea id="chatMessagetext" rows="1"
-                            class="block mx-4 p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="Your message..."></textarea> --}}
+                            <div class="flex flex-col">
+                                <button type="button"
+                                    class="justify-center p-2 text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
+                                    <i class="fas fa-bars text-xs"></i>
+                                </button>
 
-                            <div
-                                class="block mx-4 p-2.5 w-64 text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <div id="chatMessagetext">
-                                </div>
+                                <button type="button"
+                                    class="justify-center p-2 text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
+                                    <i class="fas fa-pencil text-xs"></i>
+                                </button>
+
+                                <button type="button" onclick="document.getElementById('fileInput').click();"
+                                    class="justify-center p-2 text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
+                                    <i class="fa fa-paperclip"></i>
+                                    <span class="sr-only">Upload image</span>
+                                </button>
+
                             </div>
 
 
-                            <button type="button" id="sendMessageBtn"
-                                class="inline-flex justify-center p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100 dark:text-blue-500 dark:hover:bg-gray-600">
-                                <svg aria-hidden="true" class="w-6 h-6 rotate-90" fill="currentColor"
-                                    viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z">
-                                    </path>
-                                </svg>
-                                <span class="sr-only">Send message</span>
-                            </button>
+                            <div
+                                class="block mx-1 p-1 w-64 text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <input type="text" id="small-input" placeholder="Subject"
+                                    class="block w-full p-1 mb-1 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+
+                                <select id="small"
+                                    class="block w-full p-1 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option selected class="text-sm">Choose a user</option>
+                                    @foreach (\App\Models\User::all() as $user)
+                                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                    @endforeach
+                                </select>
+                                <div id="chatMessagetextRight">
+                                </div>
+                            </div>
+                            <div class="flex flex-col">
+                                <div class="flex items-center mb-1">
+                                    <input id="default-checkbox" type="checkbox" value=""
+                                        class="w-2 h-2 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                    <label for="default-checkbox"
+                                        class="ml-1 text-[10px] font-medium text-gray-900 dark:text-gray-300">Important</label>
+                                </div>
+                                <div class="flex items-center mb-1">
+                                    <input id="default-checkbox" type="checkbox" value=""
+                                        class="w-2 h-2 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                    <label for="default-checkbox"
+                                        class="ml-1 text-[10px] font-medium text-gray-900 dark:text-gray-300">Resp.Req.</label>
+                                </div>
+                                <div class="flex items-center mb-1">
+                                    <input disabled id="default-checkbox" type="checkbox" value=""
+                                        class="w-2 h-2 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                    <label for="default-checkbox"
+                                        class="ml-1 text-[10px] font-medium text-gray-400 dark:text-gray-500">Reply</label>
+                                </div>
+                                <div class="flex items-center mb-1">
+                                    <input id="default-checkbox" type="checkbox" value=""
+                                        class="w-2 h-2 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                    <label for="default-checkbox"
+                                        class="ml-1 text-[10px] font-medium text-gray-900 dark:text-gray-300">WithDraw</label>
+                                </div>
+                                <button type="button" id="sendMessageBtn"
+                                    class="justify-center p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100 dark:text-blue-500 dark:hover:bg-gray-600">
+                                    <svg aria-hidden="true" class="w-6 h-6 rotate-90" fill="currentColor"
+                                        viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z">
+                                        </path>
+                                    </svg>
+                                    <span class="sr-only">Send message</span>
+                                </button>
+                            </div>
                         </div>
+
                     </form>
 
                 </div>

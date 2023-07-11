@@ -42,7 +42,7 @@ li.click(function () {
     var listSubjectActive = $("#listSubjectActive");
     if ($(this).hasClass("selected")) {
         $(this).removeClass("selected");
-        listSubjectActive.text('');
+        listSubjectActive.text("");
         liSelected = null;
     } else {
         li.removeClass("selected");
@@ -50,7 +50,6 @@ li.click(function () {
         liSelected = $(this);
         listSubjectActive.text(name);
         scrollToSelected();
-
     }
 });
 
@@ -68,7 +67,6 @@ $(window).keydown(function (e) {
             liSelected = li.eq(0).addClass("selected");
         }
         scrollToSelected();
-
     } else if (e.which === 38) {
         if (liSelected) {
             liSelected.removeClass("selected");
@@ -82,7 +80,6 @@ $(window).keydown(function (e) {
             liSelected = li.last().addClass("selected");
         }
         scrollToSelected();
-
     }
     var selectedValue = liSelected.text();
     var selectedDataId = liSelected.attr("data-id");
@@ -93,21 +90,21 @@ $(window).keydown(function (e) {
     console.log(selectedDataId);
 });
 
-
 function scrollToSelected() {
     if (liSelected) {
         var selectedId = liSelected.attr("id");
         var selectedElement = document.getElementById(selectedId);
-    
+
         if (selectedElement) {
             // selectedElement.scrollIntoView({ behavior: "smooth", block: "center" });
-            selectedElement.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
+            selectedElement.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+                inline: "nearest",
+            });
         }
-      }
-    
-    
-  }
-  
+    }
+}
 
 // Burger Option
 
@@ -117,3 +114,38 @@ const optionsBurger = document.getElementById("options");
 burgerButton.addEventListener("click", () => {
     optionsBurger.classList.toggle("hidden");
 });
+
+BalloonEditor.create(document.querySelector("#chatMessagetextRight"), {
+    width: "100%",
+    placeholder: "Message...", // Set the placeholder text
+    toolbar: {
+        items: [
+            "link",
+            // More toolbar items.
+            // ...
+        ],
+    },
+    toolbarSize: "10px", // Set the toolbar size to small
+    link: {
+        // Automatically add target="_blank" and rel="noopener noreferrer" to all external links.
+        addTargetToExternalLinks: true,
+
+        // Let the users control the "download" attribute of each link.
+        decorators: [
+            {
+                mode: "manual",
+                label: "Downloadable",
+                attributes: {
+                    download: "download",
+                },
+            },
+        ],
+    },
+})
+    .then((editor) => {
+        console.log("Editor was initialized", editor);
+        myEditor = editor;
+    })
+    .catch((error) => {
+        console.error(error);
+    });
