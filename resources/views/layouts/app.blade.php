@@ -17,7 +17,7 @@
 </head>
 
 <body class="font-sans antialiased">
-    <div x-data="setup()" x-init="$refs.loading.classList.add('hidden');" @resize.window="watchScreen()">
+    <div id="myApp" x-data="setup" x-init="$refs.loading.classList.add('hidden');" @resize.window="watchScreen()">
         <div class="flex min-h-screen antialiased text-gray-900 bg-gray-100 dark:bg-dark dark:text-light">
             {{-- h-screen --}}
             <div x-ref="loading"
@@ -429,6 +429,10 @@
                 currentSidebarTab: null,
                 isSettingsPanelOpen: false,
                 isSubHeaderOpen: false,
+                showSpan: false,
+                toggleShowSpan() {
+                    this.showSpan = !this.showSpan
+                },
                 watchScreen() {
                     if (window.innerWidth <= 1024) {
                         this.isSidebarOpen = false

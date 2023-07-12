@@ -39,6 +39,7 @@ class ChatController extends Controller
             'message' => $request->input('message'),
             'from' => Auth::id(),
             'to' => $request->input('to'),
+            'subject' => $request->input('subject'),
             'isread' => 0,
         ]);
         $chatId = $message->id;
@@ -168,16 +169,54 @@ class ChatController extends Controller
         }
     }
 
-    // public function fileRead(){
-    //     $url = Storage::url(public_path('uploads/'));
-    // }
-
     public function chat_email(Request $request)
+    {
+        $data = [];
+        // $faker = Faker::create();
+
+        // for ($i = 0; $i < 100; $i++) {
+        //     $countMessage = rand(0, 3);
+
+        //     $now = \Carbon\Carbon::now();
+        //     $futureDate = $now->addDays(7);
+        //     $dateRange = $now->format('d-m-y h:i:s') . ' - ' . $futureDate->format('d-m-y h:i:s');
+
+        //     $email = [
+        //         'id' => $i,
+        //         'countMessage' => $countMessage,
+        //         'name' => $faker->sentence($nbWords = 6, $variableNbWords = true),
+        //         'dateRange' => $dateRange,
+        //         'with' => $faker->name,
+        //     ];
+
+        //     $data[] = $email;
+        // }
+
+        $dataChat = Chat::with('user', 'userFrom')->orderByDesc('created_at')->get();
+        foreach ($dataChat as $key => $value) {
+            $email = [
+                'id' => $value->uuid,
+                'countMessage' => 1,
+                'name' => $value->userFrom->name,
+                'subject' => $value->subject,
+                'dateRange' => $value->created_at->format('d-M-Y h:i:s'),
+                'with' => $value->user->name,
+            ];
+            $data[] = $email;
+        }
+
+        // dd($data);
+
+
+        return response()->json($data);
+    }
+
+    public function reply_chat_email(Request $request)
     {
         $emails = [];
         $faker = Faker::create();
 
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 2; $i++) {
             $countMessage = rand(0, 3);
 
             $now = \Carbon\Carbon::now();
@@ -185,6 +224,7 @@ class ChatController extends Controller
             $dateRange = $now->format('d-m-y h:i:s') . ' - ' . $futureDate->format('d-m-y h:i:s');
 
             $email = [
+                'id' => $i,
                 'countMessage' => $countMessage,
                 'name' => $faker->sentence($nbWords = 6, $variableNbWords = true),
                 'dateRange' => $dateRange,
@@ -198,12 +238,12 @@ class ChatController extends Controller
     }
 }
 
-
-
 // @for ($i = 0; $i < 100; $i++)
 // @php
-//     $countMessage = rand(0, 3);
-//     $name = $faker->sentence($nbWords = 6, $variableNbWords = true);
+    //     $countMessage = rand(0, 3);
+    //     $name = $faker->sentence($nbWords = 6, $variableNbWords = true);
+    //
+    //
 // @endphp
 // {{-- x-data="{ countMessage: {{ $countMessage }} }" --}}
 // {{-- x-data="{ selected: false }" @click="selected = !selected" :class="{ 'selected': selected }" --}}
@@ -222,10 +262,12 @@ class ChatController extends Controller
 //             <p class="text-xs font-medium">With: {{ $faker->name }}</p>
 //             <p class="text-xs font-bold">
 //                 @php
-//                     $now = \Carbon\Carbon::now();
-//                     $futureDate = $now->addDays(7);
-//                     echo $now->format('d-m-y h:i:s') . ' - ' . $futureDate->format('d-m-y h:i:s');
-//                 @endphp
+    //                     $now = \Carbon\Carbon::now();
+    //                     $futureDate = $now->addDays(7);
+    //                     echo $now->format('d-m-y h:i:s') . ' - ' . $futureDate->format('d-m-y h:i:s');
+    //
+    //
+// @endphp
 //             </p>
 //         </div>
 //         <div class="flex items-stretch">
@@ -236,4 +278,6 @@ class ChatController extends Controller
 //         </div>
 //     </div>
 // </li>
+//
+//
 // @endfor

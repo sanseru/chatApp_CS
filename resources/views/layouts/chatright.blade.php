@@ -59,6 +59,8 @@
                     </div>
                 </div>
                 <div class="flex row justify-start ml-4">
+                    <span class="mr-3" id="backArrow"><i class="fa-solid fa-arrow-left"></i></span>
+
                     <div id="burger-button" class="relative w-8 h-8 cursor-pointer">
                         <i class="fas fa-bars text-xs"></i>
                         <div id="options"
@@ -108,10 +110,10 @@
 
                             <div
                                 class="block mx-1 p-1 w-64 text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <input type="text" id="small-input" placeholder="Subject"
+                                <input type="text" id="subject" name="subject" placeholder="Subject"
                                     class="block w-full p-1 mb-1 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
 
-                                <select id="small"
+                                <select id="to" name="to"
                                     class="block w-full p-1 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     <option selected class="text-sm">Choose a user</option>
                                     @foreach (\App\Models\User::all() as $user)
@@ -427,58 +429,124 @@
 
 </div>
 
-<script>
-    let globalVar = 'masuk sini';
-
-    function alertData() {
-        alert(masukPak);
-    }
-</script>
-
-
 @push('scripts')
     <script>
+        $('#sendMessageBtn').on('click', function() {
+            // Get the message content from the user input or other source
+            // var message = $('#chatMessagetext').val();
+            const message = window.myEditors.getData(); // Get CKEditor value
+            // var message = $('#chatMessagetextRight').val();
+            var to = $('#to').val();
+            var subject = $('#subject').val();
+
+            // console.log(message);
+            if (to == '' || to == undefined) {
+                return alert('Pilih User Terlebih Dahulu Yang Ingin Dikirim');
+            }
+
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+            // Make an AJAX request to the controller
+            $.ajax({
+                url: '/chat',
+                method: 'POST',
+                data: {
+                    _token: csrfToken, // Include the CSRF token in the data
+                    message: message,
+                    to: to,
+                    subject: subject
+                },
+                success: function(response) {
+                    // Handle the success response from the controller
+                    console.log('Message saved successfully');
+                    window.myEditors.setData('');
+                    loadEmails();
+                    $('#subject').val('');
+
+
+                    // chatRightAdd(response.message);
+                    // fetchChats();
+
+                },
+                error: function(xhr, status, error) {
+                    // Handle the error response from the controller
+                    console.log('Error saving message');
+                }
+            });
+        });
+
         function loadEmails() {
             $.ajax({
                 url: '/chat/showchats/all',
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
-                    // Clear the email list
-                    $('#chatContainer').empty();
                     // console.log(response);
+
+                    // Clear the chatContainer list
+                    $('#chatContainer').empty();
                     // Append each email item to the list
                     response.forEach(function(email) {
 
-                        var listItem = '<li x-data="{ countMessage: ' + email.countMessage + ' }" ' +
-                            'class="pl-2 py-2 cursor-pointer drop-shadow-lg mb-2 block max-w-sm p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700" ' +
-                            'data-id="Uji Coba" data-name="' + email.name + '" id="' + email.id + '">' +
-                            '<div class="flex">' +
-                            '<div class="mr-4 flex items-stretch">' +
-                            '<img src="{{ asset('profiles/60111.jpg') }}" alt="Image" class="w-10 h-15 self-center">' +
-                            '</div>' +
-                            '<div class="w-full">' +
-                            '<p class="text-xs font-medium"><strong>Subject</strong>: ' +
-                            '<span class="text-xs">' + email.name + '</span>' +
-                            '</p>' +
-                            '<p class="text-xs font-medium">With: ' + email.with + '</p>' +
-                            '<p class="text-xs font-bold">' + email.dateRange + '</p>' +
-                            '</div>' +
-                            '<div class="flex items-stretch">' +
-                            '<span class=" w-5 h-5 self-center" onclick="alert(\'klikini\')" x-show="countMessage > 0">' +
-                            '<i class="fa-solid fa-chevron-right"></i>' +
-                            '</span>' +
-                            '</div>' +
-                            '</div>' +
-                            '</li>';
+                        var listItem = viewList(email);
+
                         $('#chatContainer').append(listItem);
                     });
                 }
             });
         }
 
+        function getReplys() {
+            $.ajax({
+                url: '/chat/showreply/chat',
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    console.log(response);
+                    // Clear the chatContainer list
+                    $('#chatContainer').empty();
+                    // Append each email item to the list
+                    response.forEach(function(email) {
+
+                        var listItem = viewList(email);
+
+                        $('#chatContainer').append(listItem);
+                    });
+                    $('#backArrow').show()
+
+                }
+            });
+        }
+
+        function viewList(email) {
+
+            var listItem = '<li x-data="{ countMessage: ' + email.countMessage + ' }" ' +
+                'class="pl-2 py-2 cursor-pointer drop-shadow-lg mb-2 block max-w-sm p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700" ' +
+                'data-id="Uji Coba" data-name="' + email.name + '" id="' + email.id + '">' +
+                '<div class="flex">' +
+                '<div class="mr-4 flex items-stretch">' +
+                '<img src="{{ asset('profiles/60111.jpg') }}" alt="Image" class="w-10 h-15 self-center">' +
+                '</div>' +
+                '<div class="w-full">' +
+                '<p class="text-xs font-medium"><strong>Subject</strong>: ' +
+                '<span class="text-xs">' + email.subject + '</span>' +
+                '</p>' +
+                '<p class="text-xs font-medium">With: ' + email.with + '</p>' +
+                '<p class="text-xs font-bold">' + email.dateRange + '</p>' +
+                '</div>' +
+                '<div class="flex items-stretch">' +
+                '<span class=" w-5 h-5 self-center" onclick="getReplys()" x-show="countMessage > 0">' +
+                '<i class="fa-solid fa-chevron-right"></i>' +
+                '</span>' +
+                '</div>' +
+                '</div>' +
+                '</li>';
+            return listItem;
+        }
         $(document).ready(function() {
             loadEmails();
+            $('#backArrow').hide()
+
         });
     </script>
 @endpush

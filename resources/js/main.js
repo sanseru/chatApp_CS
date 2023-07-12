@@ -36,16 +36,19 @@ const tabs = new Tabs(tabElements, options);
 var li = $("#chatContainer li");
 var liSelected;
 var container = $("#chatContainer");
+$(document).on("click", "#chatContainer li", function () {
+    var liS = $(".selected");
 
-li.click(function () {
     var name = $(this).attr("data-name");
     var listSubjectActive = $("#listSubjectActive");
     if ($(this).hasClass("selected")) {
+        liS.removeClass("selected");
         $(this).removeClass("selected");
         listSubjectActive.text("");
         liSelected = null;
     } else {
         li.removeClass("selected");
+        liS.removeClass("selected");
         $(this).addClass("selected");
         liSelected = $(this);
         listSubjectActive.text(name);
@@ -53,7 +56,9 @@ li.click(function () {
     }
 });
 
-$(window).keydown(function (e) {
+$(document).on("keydown", function (e) {
+    var li = $("#chatContainer li");
+    // var liSelected = $(".selected");
     if (e.which === 40) {
         if (liSelected) {
             liSelected.removeClass("selected");
@@ -81,16 +86,20 @@ $(window).keydown(function (e) {
         }
         scrollToSelected();
     }
-    var selectedValue = liSelected.text();
-    var selectedDataId = liSelected.attr("data-id");
-    var name = liSelected.attr("data-name");
-    var listSubjectActive = $("#listSubjectActive");
+    if (liSelected) {
+        var selectedValue = liSelected.text();
+        var selectedDataId = liSelected.attr("data-id");
+        var name = liSelected.attr("data-name");
+        var listSubjectActive = $("#listSubjectActive");
+    
+        listSubjectActive.text(name);
+        console.log(selectedDataId);
+    }
 
-    listSubjectActive.text(name);
-    console.log(selectedDataId);
 });
 
 function scrollToSelected() {
+    console.log(liSelected);
     if (liSelected) {
         var selectedId = liSelected.attr("id");
         var selectedElement = document.getElementById(selectedId);
@@ -110,6 +119,10 @@ function scrollToSelected() {
 
 const burgerButton = document.getElementById("burger-button");
 const optionsBurger = document.getElementById("options");
+
+
+window.myEditors = null; // Declare the global variable
+
 
 burgerButton.addEventListener("click", () => {
     optionsBurger.classList.toggle("hidden");
@@ -144,7 +157,9 @@ BalloonEditor.create(document.querySelector("#chatMessagetextRight"), {
 })
     .then((editor) => {
         console.log("Editor was initialized", editor);
-        myEditor = editor;
+        // myEditor = editor;
+        window.myEditors = editor; // Assign the editor to the global variable
+
     })
     .catch((error) => {
         console.error(error);
