@@ -13,11 +13,11 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
     <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/css/main.css', 'resources/js/app.js', 'resources/js/main.js'])
+    @vite(['resources/css/app.css', 'resources/css/main.css', 'resources/js/app.js', 'resources/js/ckeditor.js', 'resources/js/main.js'])
 </head>
 
 <body class="font-sans antialiased">
-    <div id="myApp" x-data="setup" x-init="$refs.loading.classList.add('hidden');" @resize.window="watchScreen()">
+    <div id="myApp" x-data="setup()" x-init="$refs.loading.classList.add('hidden');" @resize.window="watchScreen()">
         <div class="flex min-h-screen antialiased text-gray-900 bg-gray-100 dark:bg-dark dark:text-light">
             {{-- h-screen --}}
             <div x-ref="loading"
@@ -419,7 +419,10 @@
         integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/6b37673df3.js" crossorigin="anonymous"></script>
     {{-- <script src="https://cdn.ckeditor.com/ckeditor5/38.1.0/classic/ckeditor.js"></script> --}}
-    <script src="https://cdn.ckeditor.com/ckeditor5/38.1.0/balloon/ckeditor.js"></script>
+
+    {{-- <script src="https://cdn.ckeditor.com/ckeditor5/38.1.1/super-build/ckeditor.js"></script> --}}
+
+    {{-- <script src="https://cdn.ckeditor.com/ckeditor5/38.1.0/balloon/ckeditor.js"></script> --}}
 
     @stack('scripts')
     <script>

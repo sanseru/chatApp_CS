@@ -91,11 +91,10 @@ $(document).on("keydown", function (e) {
         var selectedDataId = liSelected.attr("data-id");
         var name = liSelected.attr("data-name");
         var listSubjectActive = $("#listSubjectActive");
-    
+
         listSubjectActive.text(name);
         console.log(selectedDataId);
     }
-
 });
 
 function scrollToSelected() {
@@ -120,15 +119,14 @@ function scrollToSelected() {
 const burgerButton = document.getElementById("burger-button");
 const optionsBurger = document.getElementById("options");
 
-
 window.myEditors = null; // Declare the global variable
-
 
 burgerButton.addEventListener("click", () => {
     optionsBurger.classList.toggle("hidden");
 });
 
-BalloonEditor.create(document.querySelector("#chatMessagetextRight"), {
+ClassicEditor.create(document.querySelector("#chatMessagetextRight"), {
+    extraPlugins: [MentionCustomization], // Add the custom mention plugin function.
     width: "100%",
     placeholder: "Message...", // Set the placeholder text
     toolbar: {
@@ -154,67 +152,174 @@ BalloonEditor.create(document.querySelector("#chatMessagetextRight"), {
             },
         ],
     },
+    mention: {
+        feeds: [
+            {
+                marker: "@",
+                feed: getFeedItems,
+                itemRenderer: customItemRenderer,
+            },
+            {
+                marker: "#",
+                feed: getFeedItems,
+                itemRenderer: customItemRenderer,
+            },
+        ],
+    },
 })
     .then((editor) => {
         console.log("Editor was initialized", editor);
         // myEditor = editor;
         window.myEditors = editor; // Assign the editor to the global variable
-
     })
     .catch((error) => {
         console.error(error);
     });
 
-// function loadEmails() {
-//     axios
-//         .get("/chat/showchats/all")
-//         .then(function (response) {
-//             // Clear the email list
-//             $("#chatContainer").empty();
+function MentionCustomization(editor) {
+    // The upcast converter will convert <a class="mention" href="" data-user-id="">
+    // elements to the model 'mention' attribute.
+    editor.conversion.for("upcast").elementToAttribute({
+        view: {
+            name: "a",
+            key: "data-mention",
+            classes: "mention",
+            attributes: {
+                href: true,
+                "data-user-id": true,
+            },
+        },
+        model: {
+            key: "mention",
+            value: (viewItem) => {
+                // The mention feature expects that the mention attribute value
+                // in the model is a plain object with a set of additional attributes.
+                // In order to create a proper object, use the toMentionAttribute helper method:
+                const mentionAttribute = editor.plugins
+                    .get("Mention")
+                    .toMentionAttribute(viewItem, {
+                        // Add any other properties that you need.
+                        link: viewItem.getAttribute("href"),
+                        userId: viewItem.getAttribute("data-user-id"),
+                    });
 
-//             // Append each email item to the list
-//             response.data.forEach(function (email) {
-//                 var listItem =
-//                     '<li x-data="{ countMessage: ' +
-//                     email.countMessage +
-//                     ' }" ' +
-//                     'class="pl-2 py-2 cursor-pointer drop-shadow-lg mb-2 block max-w-sm p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700" ' +
-//                     'data-id="Uji Coba" data-name="' +
-//                     email.name +
-//                     '" id="' +
-//                     email.id +
-//                     '">' +
-//                     '<div class="flex">' +
-//                     '<div class="mr-4 flex items-stretch">' +
-//                     '<img src="{{ asset(\'profiles/60111.jpg\') }}" alt="Image" class="w-10 h-15 self-center">' +
-//                     "</div>" +
-//                     '<div class="w-full">' +
-//                     '<p class="text-xs font-medium"><strong>Subject</strong>: ' +
-//                     '<span class="text-xs">' +
-//                     email.name +
-//                     "</span>" +
-//                     "</p>" +
-//                     '<p class="text-xs font-medium">With: ' +
-//                     email.with +
-//                     "</p>" +
-//                     '<p class="text-xs font-bold">' +
-//                     email.dateRange +
-//                     "</p>" +
-//                     "</div>" +
-//                     '<div class="flex items-stretch">' +
-//                     '<span class=" w-5 h-5 self-center" onclick="alert(\'klikini\')" x-show="countMessage > 0">' +
-//                     '<i class="fa-solid fa-chevron-right"></i>' +
-//                     "</span>" +
-//                     "</div>" +
-//                     "</div>" +
-//                     "</li>";
+                return mentionAttribute;
+            },
+        },
+        converterPriority: "high",
+    });
 
-//                 $("#chatContainer").append(listItem);
-//             });
-//         })
-//         .catch(function (error) {
-//             console.error(error);
-//         });
-// }
+    // Downcast the model 'mention' text attribute to a view <a> element.
+    editor.conversion.for("downcast").attributeToElement({
+        model: "mention",
+        view: (modelAttributeValue, { writer }) => {
+            // Do not convert empty attributes (lack of value means no mention).
+            if (!modelAttributeValue) {
+                return;
+            }
 
-// loadEmails();
+            return writer.createAttributeElement(
+                "a",
+                {
+                    class: "mention",
+                    "data-mention": modelAttributeValue.id,
+                    "data-user-id": modelAttributeValue.userId,
+                    // 'href': modelAttributeValue.link
+                    onclick: 'alert( "Paragraph clicked!" )',
+                },
+                {
+                    renderUnsafeAttributes: ["onclick"],
+                    // Make mention attribute to be wrapped by other attribute elements.
+                    priority: 20,
+                    // Prevent merging mentions together.
+                    id: modelAttributeValue.uid,
+                }
+            );
+        },
+        converterPriority: "high",
+    });
+}
+
+const items = [
+    {
+        id: "@swarley",
+        userId: "1",
+        name: "Barney Stinson",
+        link: "https://www.imdb.com/title/tt0460649/characters/nm0000439",
+    },
+    {
+        id: "@lilypad",
+        userId: "2",
+        name: "Lily Aldrin",
+        link: "https://www.imdb.com/title/tt0460649/characters/nm0004989",
+    },
+    {
+        id: "@marry",
+        userId: "3",
+        name: "Marry Ann Lewis",
+        link: "https://www.imdb.com/title/tt0460649/characters/nm1130627",
+    },
+    {
+        id: "@marshmallow",
+        userId: "4",
+        name: "Marshall Eriksen",
+        link: "https://www.imdb.com/title/tt0460649/characters/nm0781981",
+    },
+    {
+        id: "@rsparkles",
+        userId: "5",
+        name: "Robin Scherbatsky",
+        link: "https://www.imdb.com/title/tt0460649/characters/nm1130627",
+    },
+    {
+        id: "@tdog",
+        userId: "6",
+        name: "Ted Mosby",
+        link: "https://www.imdb.com/title/tt0460649/characters/nm1102140",
+    },
+];
+
+function getFeedItems(queryText) {
+    // As an example of an asynchronous action, return a promise
+    // that resolves after a 100ms timeout.
+    // This can be a server request or any sort of delayed action.
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            const itemsToDisplay = items
+                // Filter out the full list of all items to only those matching the query text.
+                .filter(isItemMatching)
+                // Return 10 items max - needed for generic queries when the list may contain hundreds of elements.
+                .slice(0, 10);
+
+            resolve(itemsToDisplay);
+        }, 100);
+    });
+
+    // Filtering function - it uses `name` and `username` properties of an item to find a match.
+    function isItemMatching(item) {
+        // Make the search case-insensitive.
+        const searchString = queryText.toLowerCase();
+
+        // Include an item in the search results if name or username includes the current user input.
+        return (
+            item.name.toLowerCase().includes(searchString) ||
+            item.id.toLowerCase().includes(searchString)
+        );
+    }
+}
+
+function customItemRenderer(item) {
+    const itemElement = document.createElement("span");
+
+    itemElement.classList.add("custom-item");
+    itemElement.id = `mention-list-item-id-${item.userId}`;
+    itemElement.textContent = `${item.name} `;
+
+    const usernameElement = document.createElement("span");
+
+    usernameElement.classList.add("custom-item-username");
+    usernameElement.textContent = item.id;
+    itemElement.appendChild(usernameElement);
+
+    return itemElement;
+}

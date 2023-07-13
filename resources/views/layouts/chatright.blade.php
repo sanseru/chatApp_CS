@@ -496,20 +496,28 @@
             });
         }
 
-        function getReplys() {
+        function getReplys(uuid) {
             $.ajax({
                 url: '/chat/showreply/chat',
                 type: 'GET',
+                data: {
+                    uuid: uuid, // Include the CSRF token in the data
+                },
                 dataType: 'json',
                 success: function(response) {
                     console.log(response);
-                    // Clear the chatContainer list
+                    // // Clear the chatContainer list
                     $('#chatContainer').empty();
-                    // Append each email item to the list
+                    // // Append each email item to the list
                     response.forEach(function(email) {
 
-                        var listItem = viewList(email);
-
+                        var listItem = viewReply(email);
+                        $('#backArrow').attr('data-id', email.replyUuid);
+                        if (email.replyUuid == 0) {
+                            $('#backArrow').attr('data-action', 'backHome');
+                        } else {
+                            $('#backArrow').attr('data-action', 'back');
+                        }
                         $('#chatContainer').append(listItem);
                     });
                     $('#backArrow').show()
@@ -522,7 +530,7 @@
 
             var listItem = '<li x-data="{ countMessage: ' + email.countMessage + ' }" ' +
                 'class="pl-2 py-2 cursor-pointer drop-shadow-lg mb-2 block max-w-sm p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700" ' +
-                'data-id="Uji Coba" data-name="' + email.name + '" id="' + email.id + '">' +
+                'data-id="Uji Coba" data-name="' + email.subject + '" id="' + email.id + '">' +
                 '<div class="flex">' +
                 '<div class="mr-4 flex items-stretch">' +
                 '<img src="{{ asset('profiles/60111.jpg') }}" alt="Image" class="w-10 h-15 self-center">' +
@@ -535,7 +543,32 @@
                 '<p class="text-xs font-bold">' + email.dateRange + '</p>' +
                 '</div>' +
                 '<div class="flex items-stretch">' +
-                '<span class=" w-5 h-5 self-center" onclick="getReplys()" x-show="countMessage > 0">' +
+                '<span class=" w-5 h-5 self-center" onclick="getReplys(\'' + encodeURIComponent(email.id) +
+                '\')" x-show="countMessage > 0">' +
+                '<i class="fa-solid fa-chevron-right"></i>' +
+                '</span>' +
+                '</div>' +
+                '</div>' +
+                '</li>';
+            return listItem;
+        }
+
+        function viewReply(email) {
+
+            var listItem = '<li x-data="{ countMessage: ' + email.countMessage + ' }" ' +
+                'class="pl-2 py-2 cursor-pointer drop-shadow-lg mb-2 block max-w-sm p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700" ' +
+                'data-id="Uji Coba" data-name="' + email.subject + '" id="' + email.id + '">' +
+                '<div class="w-full flex flex-row">' +
+                '<div class="mr-1 basis-1/5 flex items-stretch">' +
+                '<img src="{{ asset('profiles/60111.jpg') }}" alt="Image" class="w-10 h-15 self-center">' +
+                '</div>' +
+                '<div class="basis-3/5 w-full">' +
+                '<p class="text-xs font-bold">' + email.dateRange + '</p>' +
+                '<span class="text-xs">' + email.message + '</span>' +
+                '</div>' +
+                '<div class="basis 1/5 ml-2  flex items-stretch">' +
+                '<span class=" w-5 h-5 self-center" onclick="getReplys(\'' + encodeURIComponent(email.id) +
+                '\')" x-show="countMessage > 0">' +
                 '<i class="fa-solid fa-chevron-right"></i>' +
                 '</span>' +
                 '</div>' +
@@ -547,6 +580,23 @@
             loadEmails();
             $('#backArrow').hide()
 
+            $('#backArrow').click(function() {
+                // Retrieve the values of data-action and data-id attributes
+                var action = $(this).data('action');
+                var id = $(this).data('id');
+
+                console.log('Tombol panah kembali diklik.');
+                console.log('data-action:', action);
+                console.log('data-id:', id);
+
+                // Add your additional code here
+
+                // Example usage:
+                if (action === 'back') {
+                    // Perform back action using the id
+                    loadEmails();
+                }
+            });
         });
     </script>
 @endpush
