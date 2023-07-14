@@ -53,6 +53,7 @@ $(document).on("click", "#chatContainer li", function () {
         liSelected = $(this);
         listSubjectActive.text(name);
         scrollToSelected();
+        
     }
 });
 
@@ -225,7 +226,7 @@ function MentionCustomization(editor) {
                     "data-mention": modelAttributeValue.id,
                     "data-user-id": modelAttributeValue.userId,
                     // 'href': modelAttributeValue.link
-                    onclick: 'alert( "Paragraph clicked!" )',
+                    onclick: 'mainChange('+modelAttributeValue.userId+')',
                 },
                 {
                     renderUnsafeAttributes: ["onclick"],

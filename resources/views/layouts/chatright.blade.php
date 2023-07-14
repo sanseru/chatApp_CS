@@ -115,7 +115,7 @@
 
                                 <select id="to" name="to"
                                     class="block w-full p-1 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    <option selected class="text-sm">Choose a user</option>
+                                    <option selected value="" class="text-sm">Choose a user</option>
                                     @foreach (\App\Models\User::all() as $user)
                                         <option value="{{ $user->id }}">{{ $user->name }}</option>
                                     @endforeach
@@ -137,9 +137,9 @@
                                         class="ml-1 text-[10px] font-medium text-gray-900 dark:text-gray-300">Resp.Req.</label>
                                 </div>
                                 <div class="flex items-center mb-1">
-                                    <input disabled id="default-checkbox" type="checkbox" value=""
+                                    <input disabled id="checkbox-reply" type="checkbox" value=""
                                         class="w-2 h-2 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                    <label for="default-checkbox"
+                                    <label for="checkbox-reply" id="label-reply"
                                         class="ml-1 text-[10px] font-medium text-gray-400 dark:text-gray-500">Reply</label>
                                 </div>
                                 <div class="flex items-center mb-1">
@@ -439,9 +439,17 @@
             var to = $('#to').val();
             var subject = $('#subject').val();
 
+            console.log(to);
             // console.log(message);
             if (to == '' || to == undefined) {
                 return alert('Pilih User Terlebih Dahulu Yang Ingin Dikirim');
+            }
+
+            if (!$('#default-checkbox').is(':disabled')) {
+                if ($('#checkbox-reply').is(':checked')) {
+                    alert('Silahkan Dilakukan Checked Reply')
+                }
+
             }
 
             var csrfToken = $('meta[name="csrf-token"]').attr('content');
@@ -491,6 +499,7 @@
                         var listItem = viewList(email);
 
                         $('#chatContainer').append(listItem);
+                        disabledReply();
                     });
                 }
             });
@@ -521,6 +530,7 @@
                         $('#chatContainer').append(listItem);
                     });
                     $('#backArrow').show()
+                    activeReply();
 
                 }
             });
@@ -553,6 +563,24 @@
             return listItem;
         }
 
+        function activeReply() {
+            // Menghapus atribut "disabled"
+            $('#checkbox-reply').removeAttr('disabled');
+
+            // Mengubah kelas CSS dan warna teks
+            // $('#checkbox-reply').removeClass('text-gray-400').addClass('text-gray-900');
+            $('#label-reply').removeClass('text-gray-400').addClass('text-gray-900');
+        }
+
+        // Fungsi untuk mengembalikan elemen ke kondisi semula
+        function disabledReply() {
+            $('#checkbox-reply').attr('disabled', 'disabled');
+            // Mengembalikan kelas CSS dan warna teks
+            // $('#checkbox-reply').removeClass('text-gray-900').addClass('text-gray-400');
+            $('#label-reply').removeClass('text-gray-900').addClass('text-gray-400');
+
+        }
+
         function viewReply(email) {
 
             var listItem = '<li x-data="{ countMessage: ' + email.countMessage + ' }" ' +
@@ -575,6 +603,22 @@
                 '</div>' +
                 '</li>';
             return listItem;
+        }
+
+
+        function mainChange(params) {
+            // alert(params);
+            var mainElement = $('main');
+
+            // Update the content dynamically
+            mainElement.html(
+                '    <div class="py-12">\
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">\
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">\
+                <div class="p-6 text-gray-900 dark:text-gray-100">\
+                <div class="grid gap-1">\
+        <div>\<img class="h-2/4 max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/featured/image.jpg" alt=""></div></div></div></div></div></div>'
+                );
         }
         $(document).ready(function() {
             loadEmails();
