@@ -124,6 +124,7 @@
                                 </div>
                             </div>
                             <div class="flex flex-col">
+                                <input type="hidden" name="uuidData" id="uuidData">
                                 <div class="flex items-center mb-1">
                                     <input id="default-checkbox" type="checkbox" value=""
                                         class="w-2 h-2 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
@@ -137,7 +138,7 @@
                                         class="ml-1 text-[10px] font-medium text-gray-900 dark:text-gray-300">Resp.Req.</label>
                                 </div>
                                 <div class="flex items-center mb-1">
-                                    <input disabled id="checkbox-reply" type="checkbox" value=""
+                                    <input disabled id="checkbox-reply" name="checkbox-reply" type="checkbox" value=""
                                         class="w-2 h-2 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                     <label for="checkbox-reply" id="label-reply"
                                         class="ml-1 text-[10px] font-medium text-gray-400 dark:text-gray-500">Reply</label>
@@ -438,16 +439,20 @@
             // var message = $('#chatMessagetextRight').val();
             var to = $('#to').val();
             var subject = $('#subject').val();
+            var reply = $('#checkbox-reply').val();
+            var uuidData = $('#uuidData').val();
 
-            console.log(to);
+            
+
+            console.log(uuidData);
             // console.log(message);
             if (to == '' || to == undefined) {
                 return alert('Pilih User Terlebih Dahulu Yang Ingin Dikirim');
             }
 
-            if (!$('#default-checkbox').is(':disabled')) {
-                if ($('#checkbox-reply').is(':checked')) {
-                    alert('Silahkan Dilakukan Checked Reply')
+            if (!$('#checkbox-reply').is(':disabled')) {
+                if (!$('#checkbox-reply').is(':checked')) {
+                    return alert('Silahkan Dilakukan Checked Reply')
                 }
 
             }
@@ -462,7 +467,9 @@
                     _token: csrfToken, // Include the CSRF token in the data
                     message: message,
                     to: to,
-                    subject: subject
+                    subject: subject,
+                    reply: reply,
+                    uuidData: uuidData
                 },
                 success: function(response) {
                     // Handle the success response from the controller
@@ -519,10 +526,11 @@
                     $('#chatContainer').empty();
                     // // Append each email item to the list
                     response.forEach(function(email) {
-
+                        console.log('getReply');
+                        console.log(email);
                         var listItem = viewReply(email);
-                        $('#backArrow').attr('data-id', email.replyUuid);
-                        if (email.replyUuid == 0) {
+                        $('#backArrow').attr('data-id', email.backReply);
+                        if (email.backReply == '') {
                             $('#backArrow').attr('data-action', 'backHome');
                         } else {
                             $('#backArrow').attr('data-action', 'back');
@@ -595,7 +603,7 @@
                 '<span class="text-xs">' + email.message + '</span>' +
                 '</div>' +
                 '<div class="basis 1/5 ml-2  flex items-stretch">' +
-                '<span class=" w-5 h-5 self-center" onclick="getReplys(\'' + encodeURIComponent(email.id) +
+                '<span class=" w-5 h-5 self-center" onclick="getReplys(\'' + encodeURIComponent(email.replyUuids) +
                 '\')" x-show="countMessage > 0">' +
                 '<i class="fa-solid fa-chevron-right"></i>' +
                 '</span>' +
@@ -638,7 +646,7 @@
                 // Example usage:
                 if (action === 'back') {
                     // Perform back action using the id
-                    loadEmails();
+                    getReplys(id);
                 }
             });
         });

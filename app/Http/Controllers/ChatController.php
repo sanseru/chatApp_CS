@@ -35,12 +35,14 @@ class ChatController extends Controller
     {
         $messageContent = $request->input('message');
 
+        $uuidReply = $request->input('uuidData');
         $message = Chat::create([
             'message' => $request->input('message'),
             'from' => Auth::id(),
             'to' => $request->input('to'),
             'subject' => $request->input('subject'),
             'isread' => 0,
+            'replyUuid' => $uuidReply,
         ]);
         $chatId = $message->id;
 
@@ -193,6 +195,9 @@ class ChatController extends Controller
         // }
 
         $dataChat = Chat::with('user', 'userFrom')
+            ->where(function ($query) {
+                $query->whereNull('replyUuid')->orWhere('replyUuid', '');
+            })
             ->orderByDesc('created_at')
             ->get();
         foreach ($dataChat as $key => $value) {
@@ -220,13 +225,27 @@ class ChatController extends Controller
             ->where('uuid', $request->input('uuid'))
             ->orderByDesc('created_at')
             ->get();
+        // dd($dataChat);
 
         foreach ($dataChat as $key => $value) {
+            $replyUuids = '';
+            $backreply = '';
             # code...
             $counts = Chat::with('user', 'userFrom')
                 ->where('replyUuid', $value->uuid)
                 ->orderByDesc('created_at')
                 ->count();
+            $dataChats = Chat::with('user', 'userFrom')
+                ->where('replyUuid', $value->replyUuid)
+                ->orderByDesc('created_at')
+                ->first();
+
+            if ($dataChats) {
+                $replyUuids = $dataChats->uuid;
+                $backreply = $dataChats->replyUuid;
+            }
+
+            // dd($value->uuid);
 
             $data = [
                 'id' => $value->uuid,
@@ -237,6 +256,9 @@ class ChatController extends Controller
                 'dateRange' => $value->created_at->format('d-M-Y h:i:s'),
                 'with' => $value->user->name,
                 'countReply' => $counts,
+                'replyUuids' => $replyUuids,
+                'backReply' => $backreply,
+
             ];
 
             $datas[] = $data;

@@ -46,6 +46,8 @@ $(document).on("click", "#chatContainer li", function () {
         $(this).removeClass("selected");
         listSubjectActive.text("");
         liSelected = null;
+        var uuidData = $("#uuidData");
+        uuidData.val('');
     } else {
         li.removeClass("selected");
         liS.removeClass("selected");
@@ -53,7 +55,10 @@ $(document).on("click", "#chatContainer li", function () {
         liSelected = $(this);
         listSubjectActive.text(name);
         scrollToSelected();
-        
+        var selectedDataId = liSelected.attr("id");
+        console.log(selectedDataId);
+        var uuidData = $("#uuidData");
+        uuidData.val(selectedDataId);
     }
 });
 
@@ -89,12 +94,12 @@ $(document).on("keydown", function (e) {
     }
     if (liSelected) {
         var selectedValue = liSelected.text();
-        var selectedDataId = liSelected.attr("data-id");
+        var selectedDataId = liSelected.attr("id");
         var name = liSelected.attr("data-name");
         var listSubjectActive = $("#listSubjectActive");
-
+        var uuidData = $("#uuidData");
+        uuidData.val(selectedDataId);
         listSubjectActive.text(name);
-        console.log(selectedDataId);
     }
 });
 
@@ -226,7 +231,7 @@ function MentionCustomization(editor) {
                     "data-mention": modelAttributeValue.id,
                     "data-user-id": modelAttributeValue.userId,
                     // 'href': modelAttributeValue.link
-                    onclick: 'mainChange('+modelAttributeValue.userId+')',
+                    onclick: "mainChange(" + modelAttributeValue.userId + ")",
                 },
                 {
                     renderUnsafeAttributes: ["onclick"],
