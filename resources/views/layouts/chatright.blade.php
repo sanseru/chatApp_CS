@@ -647,6 +647,8 @@
                 if (action === 'back') {
                     // Perform back action using the id
                     getReplys(id);
+                }else{
+                    loadEmails();
                 }
             });
         });
