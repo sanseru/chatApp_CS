@@ -9,7 +9,7 @@ export default defineConfig({
                 'resources/css/main.css',
                 'resources/js/app.js',
                 'resources/js/main.js',
-                'resources/js/ckeditor.js',
+                // 'resources/js/ckeditor.js',
 
             ],
             refresh: true,
