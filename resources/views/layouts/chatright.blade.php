@@ -533,7 +533,7 @@
                         if (email.backReply == '') {
                             $('#backArrow').attr('data-action', 'backHome');
                         } else {
-                            $('#backArrow').attr('data-action', 'back');
+                            $('#backArrow').attr('data-action', 'backHome');
                         }
                         $('#chatContainer').append(listItem);
                     });
