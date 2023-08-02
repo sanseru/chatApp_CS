@@ -188,7 +188,7 @@ ClassicEditor.create(document.querySelector("#chatMessagetextRight"), {
                 itemRenderer: customItemRenderer,
             },
             {
-                marker: "#ins",
+                marker: "#",
                 feed: getFeedItems,
                 itemRenderer: customItemRenderer,
             },
