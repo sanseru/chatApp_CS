@@ -47,7 +47,8 @@ $(document).on("click", "#chatContainer li", function () {
         listSubjectActive.text("");
         liSelected = null;
         var uuidData = $("#uuidData");
-        uuidData.val('');
+        uuidData.val("");
+        UnCheckCheckbox();
     } else {
         li.removeClass("selected");
         liS.removeClass("selected");
@@ -59,8 +60,23 @@ $(document).on("click", "#chatContainer li", function () {
         console.log(selectedDataId);
         var uuidData = $("#uuidData");
         uuidData.val(selectedDataId);
+        checkCheckbox();
     }
 });
+
+function checkCheckbox() {
+    var checkbox = document.getElementById("checkbox-reply");
+    if (!checkbox.disabled) {
+        checkbox.checked = true;
+    }
+}
+
+function UnCheckCheckbox() {
+    var checkbox = document.getElementById("checkbox-reply");
+    if (!checkbox.disabled) {
+        checkbox.checked = false;
+    }
+}
 
 $(document).on("keydown", function (e) {
     var li = $("#chatContainer li");
@@ -68,27 +84,33 @@ $(document).on("keydown", function (e) {
     if (e.which === 40) {
         if (liSelected) {
             liSelected.removeClass("selected");
+            UnCheckCheckbox();
             var next = liSelected.next("li");
             if (next.length > 0) {
                 liSelected = next.addClass("selected");
             } else {
                 liSelected = li.eq(0).addClass("selected");
             }
+            checkCheckbox();
         } else {
             liSelected = li.eq(0).addClass("selected");
+            checkCheckbox();
         }
         scrollToSelected();
     } else if (e.which === 38) {
         if (liSelected) {
             liSelected.removeClass("selected");
+            UnCheckCheckbox();
             var prev = liSelected.prev("li");
             if (prev.length > 0) {
                 liSelected = prev.addClass("selected");
             } else {
                 liSelected = li.last().addClass("selected");
             }
+            checkCheckbox();
         } else {
             liSelected = li.last().addClass("selected");
+            checkCheckbox();
         }
         scrollToSelected();
     }
@@ -166,7 +188,7 @@ ClassicEditor.create(document.querySelector("#chatMessagetextRight"), {
                 itemRenderer: customItemRenderer,
             },
             {
-                marker: "#",
+                marker: "#ins",
                 feed: getFeedItems,
                 itemRenderer: customItemRenderer,
             },

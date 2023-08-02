@@ -820,6 +820,7 @@
                     }
                 });
             });
+            
             $(document).ready(function() {
                 var lastTime;
                 fetchChats();

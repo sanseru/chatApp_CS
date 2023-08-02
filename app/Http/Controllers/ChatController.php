@@ -220,12 +220,57 @@ class ChatController extends Controller
     public function reply_chat_email(Request $request)
     {
         $datas = [];
+        $replys = [];
+
 
         $dataChat = Chat::with('user', 'userFrom')
             ->where('uuid', $request->input('uuid'))
             ->orderByDesc('created_at')
             ->get();
-        // dd($dataChat);
+        $dataChatReply = Chat::with('user', 'userFrom')
+            ->where('replyUuid', $request->input('uuid'))
+            ->orderBy('created_at', 'asc')
+            ->get();
+
+
+        foreach ($dataChatReply as $key => $valuex) {
+            $replyUuids = '';
+            $backreply = '';
+            # code...
+            $counts = Chat::with('user', 'userFrom')
+                ->where('replyUuid', $valuex->uuid)
+                ->orderByDesc('created_at')
+                ->count();
+            $dataChats = Chat::with('user', 'userFrom')
+                ->where('replyUuid', $valuex->replyUuid)
+                ->orderByDesc('created_at')
+                ->first();
+
+            if ($dataChats) {
+                $replyUuids = $dataChats->uuid;
+                $backreply = $dataChats->replyUuid;
+            }
+
+            // dd($valuex->uuid);
+
+            $datax = [
+                'id' => $valuex->uuid,
+                'countMessage' => $counts,
+                'name' => $valuex->userFrom->name,
+                'subject' => $valuex->subject,
+                'message' => $valuex->message,
+                'dateRange' => $valuex->created_at->format('d-M-Y h:i:s'),
+                'with' => $valuex->user->name,
+                'countReply' => $counts,
+                'replyUuids' => $replyUuids,
+                'backReply' => $backreply,
+                'from' => $valuex->from,
+                'to' => $valuex->to,
+                'replys' => $dataChatReply,
+            ];
+
+            $replys[] = $datax;
+        }
 
         foreach ($dataChat as $key => $value) {
             $replyUuids = '';
@@ -258,11 +303,16 @@ class ChatController extends Controller
                 'countReply' => $counts,
                 'replyUuids' => $replyUuids,
                 'backReply' => $backreply,
+                'from' => $value->from,
+                'to' => $value->to,
+                'replysss' => $replys,
+
 
             ];
 
             $datas[] = $data;
         }
+        
 
         return response()->json($datas);
     }

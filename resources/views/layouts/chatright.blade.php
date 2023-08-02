@@ -77,7 +77,7 @@
                     </div>
                     <div id="listSubjectActive" class="text-sm font-extrabold grid content-center"></div>
                 </div>
-                <div class=" w-full overflow-y-auto h-80">
+                <div id="containersChat" class=" w-full overflow-y-auto h-80">
                     <ul class="p-1" id="chatContainer">
                         <p class="my-8">Fetch Data</p>
                     </ul>
@@ -112,7 +112,7 @@
                                 class="block mx-1 p-1 w-64 text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <input type="text" id="subject" name="subject" placeholder="Subject"
                                     class="block w-full p-1 mb-1 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-
+                                <input type="hidden" id="mainid" name="mainid">
                                 <select id="to" name="to"
                                     class="block w-full p-1 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     <option selected value="" class="text-sm">Choose a user</option>
@@ -138,7 +138,8 @@
                                         class="ml-1 text-[10px] font-medium text-gray-900 dark:text-gray-300">Resp.Req.</label>
                                 </div>
                                 <div class="flex items-center mb-1">
-                                    <input disabled id="checkbox-reply" name="checkbox-reply" type="checkbox" value=""
+                                    <input disabled id="checkbox-reply" name="checkbox-reply" type="checkbox"
+                                        value=""
                                         class="w-2 h-2 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                     <label for="checkbox-reply" id="label-reply"
                                         class="ml-1 text-[10px] font-medium text-gray-400 dark:text-gray-500">Reply</label>
@@ -441,8 +442,10 @@
             var subject = $('#subject').val();
             var reply = $('#checkbox-reply').val();
             var uuidData = $('#uuidData').val();
+            var mainid = $('#mainid').val();
 
-            
+
+
 
             console.log(uuidData);
             // console.log(message);
@@ -450,12 +453,12 @@
                 return alert('Pilih User Terlebih Dahulu Yang Ingin Dikirim');
             }
 
-            if (!$('#checkbox-reply').is(':disabled')) {
-                if (!$('#checkbox-reply').is(':checked')) {
-                    return alert('Silahkan Dilakukan Checked Reply')
-                }
+            // if (!$('#checkbox-reply').is(':disabled')) {
+            //     if (!$('#checkbox-reply').is(':checked')) {
+            //         return alert('Silahkan Dilakukan Checked Reply')
+            //     }
 
-            }
+            // }
 
             var csrfToken = $('meta[name="csrf-token"]').attr('content');
 
@@ -469,13 +472,19 @@
                     to: to,
                     subject: subject,
                     reply: reply,
-                    uuidData: uuidData
+                    uuidData: uuidData,
+                    mainid: mainid
                 },
                 success: function(response) {
+                    console.log(response.message);
                     // Handle the success response from the controller
                     console.log('Message saved successfully');
                     window.myEditors.setData('');
-                    loadEmails();
+                    if (response.message.replyUuid) {
+                        getReplys(response.message.replyUuid);
+                    } else {
+                        loadEmails();
+                    }
                     $('#subject').val('');
 
 
@@ -507,6 +516,11 @@
 
                         $('#chatContainer').append(listItem);
                         disabledReply();
+                        $('#backArrow').hide()
+                        $('#subject').val('');
+                        $('#subject').prop("disabled", false);
+                        $('#to').val('');
+                        $("#to").prop("disabled", false);
                     });
                 }
             });
@@ -521,25 +535,48 @@
                 },
                 dataType: 'json',
                 success: function(response) {
-                    console.log(response);
+                    // console.log(response);
                     // // Clear the chatContainer list
                     $('#chatContainer').empty();
                     // // Append each email item to the list
                     response.forEach(function(email) {
-                        console.log('getReply');
-                        console.log(email);
+                        // console.log('getReply');
+                        // console.log(email);
                         var listItem = viewReply(email);
                         $('#backArrow').attr('data-id', email.backReply);
-                        if (email.backReply == '') {
+                        console.log('Datanya dalah : ' + email.backReply );
+                        // Cek nilai email.backReply dan atur data-action sesuai kondisi
+                        if (email.backReply === '' || email.backReply === null) {
+                            console.log('Sebelumnya data-action:', $('#backArrow').data('action'));
                             $('#backArrow').attr('data-action', 'backHome');
+                            console.log('Setelahnya data-action:', $('#backArrow').data('action'));
                         } else {
-                            $('#backArrow').attr('data-action', 'backHome');
+                            $('#backArrow').attr('data-action', 'back');
                         }
                         $('#chatContainer').append(listItem);
+                        $('#subject').val(email.subject);
+                        $("#subject").prop("disabled", true);
+                        if ({{ Auth::id() }} == email.to) {
+                            $('#to').val(email.from);
+
+                        } else {
+                            $('#to').val(email.to);
+                        }
+                        $("#to").prop("disabled", true);
+                        $("#mainid").val(email.id);
+                        var replysx = email.replysss
+
+                        replysx.forEach(function(data) {
+                            console.log(data);
+                            var listItemx = viewReply(data);
+                            $('#chatContainer').append(listItemx);
+
+                        });
                     });
                     $('#backArrow').show()
                     activeReply();
-
+                    scrollToBottom();
+                    // alert( $('#backArrow').data('action'));
                 }
             });
         }
@@ -601,6 +638,7 @@
                 '<div class="basis-3/5 w-full">' +
                 '<p class="text-xs font-bold">' + email.dateRange + '</p>' +
                 '<span class="text-xs">' + email.message + '</span>' +
+                '<span class="text-xs">From : ' + email.name + '</span>' +
                 '</div>' +
                 '<div class="basis 1/5 ml-2  flex items-stretch">' +
                 '<span class=" w-5 h-5 self-center" onclick="getReplys(\'' + encodeURIComponent(email.replyUuids) +
@@ -614,6 +652,13 @@
         }
 
 
+
+        // Fungsi untuk scroll ke bagian paling bawah kontainer
+        function scrollToBottom() {
+            var container = $("#containersChat");
+            container.scrollTop(container[0].scrollHeight);
+        }
+
         function mainChange(params) {
             // alert(params);
             var mainElement = $('main');
@@ -621,36 +666,38 @@
             // Update the content dynamically
             mainElement.html(
                 '    <div class="py-12">\
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">\
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">\
-                <div class="p-6 text-gray-900 dark:text-gray-100">\
-                <div class="grid gap-1">\
-        <div>\<img class="h-2/4 max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/featured/image.jpg" alt=""></div></div></div></div></div></div>'
-                );
+                                        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">\
+                                            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">\
+                                                <div class="p-6 text-gray-900 dark:text-gray-100">\
+                                                <div class="grid gap-1">\
+                                        <div>\<img class="h-2/4 max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/featured/image.jpg" alt=""></div></div></div></div></div></div>'
+            );
         }
         $(document).ready(function() {
             loadEmails();
             $('#backArrow').hide()
+        });
 
-            $('#backArrow').click(function() {
-                // Retrieve the values of data-action and data-id attributes
-                var action = $(this).data('action');
-                var id = $(this).data('id');
+        $('#backArrow').click(function() {
+            // Retrieve the values of data-action and data-id attributes
+            var action = $('#backArrow').attr('data-action');
+            var id = $('#backArrow').attr('data-id');
 
-                console.log('Tombol panah kembali diklik.');
-                console.log('data-action:', action);
-                console.log('data-id:', id);
-
-                // Add your additional code here
-
-                // Example usage:
-                if (action === 'back') {
-                    // Perform back action using the id
-                    getReplys(id);
-                }else{
-                    loadEmails();
-                }
-            });
+            console.log('Tombol panah kembali diklik.');
+            console.log('data-action:', action);
+            console.log('data-id:', id);
+            // Example usage:
+            if (action === 'back') {
+                // Perform back action using the id
+                getReplys(id);
+            } else {
+                loadEmails();
+                $('#backArrow').hide()
+                $('#subject').val('');
+                $('#subject').prop("disabled", false);
+                $('#to').val('');
+                $("#to").prop("disabled", false);
+            }
         });
     </script>
 @endpush
