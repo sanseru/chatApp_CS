@@ -46,6 +46,14 @@ class ChatController extends Controller
         ]);
         $chatId = $message->id;
 
+        $chat = Chat::where('uuid', $uuidReply)->first();
+        if ($chat) {
+            // Update the chat model's attributes
+            $chat->update([
+                'withdraw' => 1,
+            ]);
+        }
+
         $data = Chat::with('user', 'userFrom')
             ->where('id', $chatId)
             ->first();
@@ -222,7 +230,6 @@ class ChatController extends Controller
         $datas = [];
         $replys = [];
 
-
         $dataChat = Chat::with('user', 'userFrom')
             ->where('uuid', $request->input('uuid'))
             ->orderByDesc('created_at')
@@ -231,7 +238,6 @@ class ChatController extends Controller
             ->where('replyUuid', $request->input('uuid'))
             ->orderBy('created_at', 'asc')
             ->get();
-
 
         foreach ($dataChatReply as $key => $valuex) {
             $replyUuids = '';
@@ -267,6 +273,7 @@ class ChatController extends Controller
                 'from' => $valuex->from,
                 'to' => $valuex->to,
                 'replys' => $dataChatReply,
+                'withdraw' => $valuex->withdraw,
             ];
 
             $replys[] = $datax;
@@ -305,14 +312,12 @@ class ChatController extends Controller
                 'backReply' => $backreply,
                 'from' => $value->from,
                 'to' => $value->to,
+                'withdraw' => $value->withdraw,
                 'replysss' => $replys,
-
-
             ];
 
             $datas[] = $data;
         }
-        
 
         return response()->json($datas);
     }

@@ -3,7 +3,7 @@
     text-decoration: underline;
 }
 
-.ck.ck-toolbar.ck-toolbar_grouping>.ck-toolbar__items {
+.ck.ck-toolbar.ck-toolbar_grouping > .ck-toolbar__items {
     flex-wrap: nowrap;
     max-height: 20px;
 }
@@ -15,8 +15,14 @@
     background: rgba(14, 210, 210, 0.615);
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  }
+}
 
-  #burger-button {
+#burger-button {
     z-index: 99999;
-  }
+}
+
+#chatContainer li.withdraw {
+    background: rgba(60, 71, 71, 0.615);
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}

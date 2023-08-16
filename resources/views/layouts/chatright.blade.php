@@ -145,7 +145,8 @@
                                         class="ml-1 text-[10px] font-medium text-gray-400 dark:text-gray-500">Reply</label>
                                 </div>
                                 <div class="flex items-center mb-1">
-                                    <input id="default-checkbox" type="checkbox" value=""
+                                    <input id="checkbox-withdraw" name="checkbox-withdraw"type="checkbox"
+                                        value=""
                                         class="w-2 h-2 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                     <label for="default-checkbox"
                                         class="ml-1 text-[10px] font-medium text-gray-900 dark:text-gray-300">WithDraw</label>
@@ -521,6 +522,8 @@
                         $('#subject').prop("disabled", false);
                         $('#to').val('');
                         $("#to").prop("disabled", false);
+                        $('#users').val('');
+                        $("#users").prop("disabled", false);
                     });
                 }
             });
@@ -540,11 +543,17 @@
                     $('#chatContainer').empty();
                     // // Append each email item to the list
                     response.forEach(function(email) {
+
+                        if (email.withdraw == 1) {
+
+                            $("#sendMessageBtn").hide()
+
+                        }
                         // console.log('getReply');
-                        // console.log(email);
+                        console.log('masuk widtharawa' + email.withdraw);
                         var listItem = viewReply(email);
                         $('#backArrow').attr('data-id', email.backReply);
-                        console.log('Datanya dalah : ' + email.backReply );
+                        console.log('Datanya dalah : ' + email.backReply);
                         // Cek nilai email.backReply dan atur data-action sesuai kondisi
                         if (email.backReply === '' || email.backReply === null) {
                             console.log('Sebelumnya data-action:', $('#backArrow').data('action'));
@@ -558,16 +567,23 @@
                         $("#subject").prop("disabled", true);
                         if ({{ Auth::id() }} == email.to) {
                             $('#to').val(email.from);
+                            $('#users').val(email.from);
+
 
                         } else {
                             $('#to').val(email.to);
+                            $('#users').val(email.to);
+
                         }
                         $("#to").prop("disabled", true);
+                        $("#users").prop("disabled", true);
+
                         $("#mainid").val(email.id);
                         var replysx = email.replysss
 
+
                         replysx.forEach(function(data) {
-                            console.log(data);
+                            // console.log(data);
                             var listItemx = viewReply(data);
                             $('#chatContainer').append(listItemx);
 
@@ -577,6 +593,7 @@
                     activeReply();
                     scrollToBottom();
                     // alert( $('#backArrow').data('action'));
+
                 }
             });
         }
@@ -627,16 +644,18 @@
         }
 
         function viewReply(email) {
-
+            console.log(email.withdraw);
             var listItem = '<li x-data="{ countMessage: ' + email.countMessage + ' }" ' +
-                'class="pl-2 py-2 cursor-pointer drop-shadow-lg mb-2 block max-w-sm p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700" ' +
+                'class="bg-gray-800 pl-2 py-2 cursor-pointer drop-shadow-lg mb-2  block max-w-sm p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700' +
+                (email.withdraw == 1 ? ' withdraw ' : '') + '" ' +
                 'data-id="Uji Coba" data-name="' + email.subject + '" id="' + email.id + '">' +
                 '<div class="w-full flex flex-row">' +
                 '<div class="mr-1 basis-1/5 flex items-stretch">' +
                 '<img src="{{ asset('profiles/60111.jpg') }}" alt="Image" class="w-10 h-15 self-center">' +
                 '</div>' +
                 '<div class="basis-3/5 w-full">' +
-                '<p class="text-xs font-bold">' + email.dateRange + '</p>' +
+                '<p class="text-xs font-bold">' + email.dateRange + (email.withdraw == 1 ? ' CHAT WITHDRAW ' : '') +
+                '</p>' +
                 '<span class="text-xs">' + email.message + '</span>' +
                 '<span class="text-xs">From : ' + email.name + '</span>' +
                 '</div>' +
@@ -666,11 +685,11 @@
             // Update the content dynamically
             mainElement.html(
                 '    <div class="py-12">\
-                                        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">\
-                                            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">\
-                                                <div class="p-6 text-gray-900 dark:text-gray-100">\
-                                                <div class="grid gap-1">\
-                                        <div>\<img class="h-2/4 max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/featured/image.jpg" alt=""></div></div></div></div></div></div>'
+                                                                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">\
+                                                                    <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">\
+                                                                        <div class="p-6 text-gray-900 dark:text-gray-100">\
+                                                                        <div class="grid gap-1">\
+                                                                <div>\<img class="h-2/4 max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/featured/image.jpg" alt=""></div></div></div></div></div></div>'
             );
         }
         $(document).ready(function() {
@@ -686,6 +705,8 @@
             console.log('Tombol panah kembali diklik.');
             console.log('data-action:', action);
             console.log('data-id:', id);
+            $("#sendMessageBtn").show()
+
             // Example usage:
             if (action === 'back') {
                 // Perform back action using the id
