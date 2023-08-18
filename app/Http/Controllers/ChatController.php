@@ -33,9 +33,7 @@ class ChatController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->input('withdraw/'));
         $messageContent = $request->input('message');
-
         $uuidReply = $request->input('uuidData');
         $message = Chat::create([
             'message' => $request->input('message'),
@@ -48,7 +46,10 @@ class ChatController extends Controller
         $chatId = $message->id;
 
         $chatcheckbox = Chat::where('uuid', $uuidReply)->first();
-        if ($request->input('withdraw') ) {
+        // dd(isset($chatcheckbox));
+
+        if ($request->input('withdraw') == "true" && isset($chatcheckbox)) {
+            // dd('masuk sini');
             // Update the chat model's attributes
             $chatcheckbox->update([
                 'withdraw' => 1,
