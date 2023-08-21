@@ -686,11 +686,11 @@
             // Update the content dynamically
             mainElement.html(
                 '    <div class="py-12">\
-                                                                    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">\
-                                                                        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">\
-                                                                            <div class="p-6 text-gray-900 dark:text-gray-100">\
-                                                                            <div class="grid gap-1">\
-                                                                    <div>\<img class="h-2/4 max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/featured/image.jpg" alt=""></div></div></div></div></div></div>'
+                                                                            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">\
+                                                                                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">\
+                                                                                    <div class="p-6 text-gray-900 dark:text-gray-100">\
+                                                                                    <div class="grid gap-1">\
+                                                                            <div>\<img class="h-2/4 max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/featured/image.jpg" alt=""></div></div></div></div></div></div>'
             );
         }
         $(document).ready(function() {
@@ -712,6 +712,14 @@
             if (action === 'back') {
                 // Perform back action using the id
                 getReplys(id);
+                var checkbox = document.getElementById("checkbox-reply");
+                if (!checkbox.disabled) {
+                    checkbox.checked = false;
+                }
+                var checkboxwithdraw = document.getElementById("checkbox-withdraw");
+                if (!checkboxwithdraw.disabled) {
+                    checkboxwithdraw.checked = false;
+                }
             } else {
                 loadEmails();
                 $('#backArrow').hide()
